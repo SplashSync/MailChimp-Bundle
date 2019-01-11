@@ -1,6 +1,6 @@
 {
-    "name":                 "splash/soap",
-    "description":          "Splash Soap Connector",
+    "name":                 "splash/mailchimp",
+    "description":          "Splash MailChimp API Connector (Embedded)",
 
     "type":                 "symfony-bundle",
     "license":              "MIT",
@@ -13,14 +13,14 @@
             "email":"contact@splashsync.com"
         },
         {
-            "name": "Bernard Paquier",
+            "name": "BadPixxel",
             "email": "eshop.bpaquier@gmail.com"
         }
     ],
 
     "autoload": {
         "psr-4": { 
-            "Splash\\Connectors\\Soap\\":     "src/"
+            "Splash\\Connectors\\MailChimp\\":     "src/"
         }
     },
     

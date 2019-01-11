@@ -1,0 +1,23 @@
+
+################################################################################
+## Test Configuration for Splash Bundle
+splash:
+    connections:
+
+        mailchimp:
+            id:                 ThisIsFakerWsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 1 (MailChimp)
+            host:               "%splash_host%/ws/soap"
+            server_host:        "%splash_host%"
+            connector:          mailchimp
+#            config:     
+
+        faker:
+            id:                 ThisIsFakerWsId
+            key:                ThisIsNotASecretKeyForFaker
+            name:               Serveur 1 (Faker)
+            host:               "%splash_host%/ws/soap"
+            server_host:        "%splash_host%"
+
+        
