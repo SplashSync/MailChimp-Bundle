@@ -35,7 +35,8 @@
     
     "require": {
         "php":                                          "^7.1",
-        "splash/php-bundle":                            "*"
+        "splash/php-bundle":                            "*",
+        "nategood/httpful":                             "^0.2"
     },
     
     "require-dev": {
