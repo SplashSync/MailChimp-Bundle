@@ -9,7 +9,7 @@ matrix:
         # Symfony 4.0 Branch       
         - php: 7.2
           env: SF_VERSION="4.0.*"      
-         Symfony 4.2 Branch       
+        # Symfony 4.2 Branch       
         - php: 7.2
           env: SF_VERSION="4.2.*"  
         
