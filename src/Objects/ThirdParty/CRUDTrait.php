@@ -116,6 +116,7 @@ trait CRUDTrait
                 $this->object->id,
                 API::hash($this->object->email_address)
             );
+
             return API::hash($this->object->email_address);
         }
 

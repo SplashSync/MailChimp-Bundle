@@ -15,8 +15,8 @@
 
 namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
 
-use stdClass;
 use Splash\Core\SplashCore      as Splash;
+use stdClass;
 
 /**
  * MailChimp ThirdParty Merge Fields (Required)
