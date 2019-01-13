@@ -37,6 +37,9 @@ before_install:
 # Install composer dependencies,
 # Create database, schema and fixtures
 install:   
+    # Setup MailChimp Connector
+    - echo "$MC_API_LIST"
+    
     # Setup Travis
     - curl -s https://raw.githubusercontent.com/SplashSync/Php-Bundle/master/src/Resources/travis/configure.sh  | bash
     # Setup Symfony Version if Required
