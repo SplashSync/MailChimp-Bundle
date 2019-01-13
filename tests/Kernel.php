@@ -47,6 +47,7 @@ class Kernel extends BaseKernel
 
         //==============================================================================
         // SPLASH CONNECTORS BUNDLE
+        $bundles[] = new Splash\Connectors\Faker\FakerBundle();
         $bundles[] = new Splash\Connectors\MailChimp\MailChimpBundle();
         
         //==============================================================================
