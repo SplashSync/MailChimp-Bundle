@@ -306,15 +306,14 @@ class MailChimpHelper
         //====================================================================//
         // Perform Request
         try {
-            $response = Request::delete(self::$endPoint.$path)
-                ->send();
+            $response = Request::delete(self::$endPoint.$path)->send();
         } catch (ConnectionErrorException $ex) {
             Splash::log()->err($ex->getMessage());
 
             return null;
         }
         //====================================================================//
-        // Catch Errors inResponse
+        // Catch Errors in Response
         return self::catchErrors($response) ? true : false;
     }
     
@@ -328,15 +327,14 @@ class MailChimpHelper
     private static function catchErrors(Response $response) : bool
     {
         //====================================================================//
-        //  Debug Informations
-        if (true == SPLASH_DEBUG) {
-            Splash::log()->www("[MailChimp] Full Response", $response);
-        }
-        
-        //====================================================================//
         // Check if MailChimp Response has Errors
         if (!$response->hasErrors()) {
             return true;
+        }
+        //====================================================================//
+        //  Debug Informations
+        if (true == SPLASH_DEBUG) {
+            Splash::log()->www("[MailChimp] Full Response", $response);
         }
         if (!$response->hasBody()) {
             return false;

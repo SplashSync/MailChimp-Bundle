@@ -15,6 +15,7 @@
 
 namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
 
+use stdClass;
 use Splash\Core\SplashCore      as Splash;
 
 /**
@@ -89,7 +90,7 @@ trait MergeTrait
 
         if (!empty($fieldData)) {
             if (!isset($this->object->merge_fields)) {
-                $this->object->merge_fields = array();
+                $this->object->merge_fields = new stdClass();
             }
             if (!isset($this->object->merge_fields->{$fieldName}) || ($this->object->merge_fields->{$fieldName} !== $fieldData)) {
                 $this->object->merge_fields->{$fieldName} = $fieldData;

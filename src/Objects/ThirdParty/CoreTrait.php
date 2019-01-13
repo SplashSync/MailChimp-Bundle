@@ -122,7 +122,7 @@ trait CoreTrait
 
                 break;
             case 'vip':
-                $this->setSimple($fieldName, $fieldData);
+                $this->setSimple($fieldName, (bool) $fieldData);
 
                 break;
             default:
