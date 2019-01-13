@@ -38,8 +38,8 @@ before_install:
 # Create database, schema and fixtures
 install:   
     # Setup MailChimp Connector
-    - sed -i -e 's/ThisIsSecretApiKey/'${MC_API_KEY}'/g' tests/config/splash.yml >/dev/null 2>&1
-    - sed -i -e 's/ThisIsSecretApiList/'${MC_API_LIST}'/g' tests/config/splash.yml >/dev/null 2>&1
+    - sed -i -e 's/ThisIsSecretApiKey/'MC_API_KEY'/g' tests/config/splash.yml >/dev/null 2>&1
+    - sed -i -e 's/ThisIsSecretApiList/'MC_API_LIST'/g' tests/config/splash.yml >/dev/null 2>&1
     - cat tests/config/splash.yml
     
     # Setup Travis
