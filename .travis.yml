@@ -3,12 +3,12 @@
 # Define Test Matrix
 matrix:
     include:      
-        # Symfony 3.4 Branch
-        - php: 7.1
-        - php: 7.2
-        # Symfony 4.0 Branch       
-        - php: 7.2
-          env: SF_VERSION="4.0.*"      
+#        # Symfony 3.4 Branch
+#        - php: 7.1
+#        - php: 7.2
+#        # Symfony 4.0 Branch       
+#        - php: 7.2
+#          env: SF_VERSION="4.0.*"      
         # Symfony 4.2 Branch       
         - php: 7.2
           env: SF_VERSION="4.2.*"  
@@ -38,7 +38,9 @@ before_install:
 # Create database, schema and fixtures
 install:   
     # Setup MailChimp Connector
-    - echo "$MC_API_LIST"
+    - sed -i -e 's/ThisIsSecretApiKey/$MC_API_KEY/g' tests/config/splash.yml
+    - sed -i -e 's/ThisIsSecretApiList/$MC_API_LIST/g' tests/config/splash.yml
+    - cat tests/config/splash.yml
     
     # Setup Travis
     - curl -s https://raw.githubusercontent.com/SplashSync/Php-Bundle/master/src/Resources/travis/configure.sh  | bash
