@@ -104,7 +104,8 @@ trait CRUDTrait
             self::getBaseUri()."/".$this->object->id,
             $this->object
         );
-        if (is_null($response)) {
+
+        if (is_null($response) || ($response->id != $this->object->id)) {
             return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update Member (".$this->object->email_address.").");
         }
         //====================================================================//
