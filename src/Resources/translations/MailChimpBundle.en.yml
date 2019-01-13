@@ -1,0 +1,26 @@
+
+## Node Variables 
+var:
+    apikey:
+        label:  API Key
+        desc:   "API keys provide full access to your MailChimp account, so keep them safe."
+
+    list:
+        label:  List
+        desc:   "The MailChimp list you want to synchronize with Splash."
+
+## Node Profile
+profile:
+    connection:
+        title: API Connection
+    card:   
+        title:  MailChimp API V3
+        label:  Connect your Mailchimp Account to Sync your Customer with your Subscriber Lists
+
+## Node Api Actions
+admin:
+    webhooks:
+        label:  Update of WebHooks
+        desc:   Detect & Update Splash Sync WebHooks Configuration
+        msg:    WebHook Configuration Updated
+        err:    Update of WebHooks Configuration Failled

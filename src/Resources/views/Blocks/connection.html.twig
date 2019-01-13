@@ -1,0 +1,37 @@
+{% trans_default_domain "ConnectorsMailChimpBundle" %}
+
+<!-- Connection Block -->
+<ul class="list-unstyled">
+   
+    <li>
+        <h4 class="font-md {% if connector.selfTest %}text-success{% else %}text-danger{% endif %}">
+            <i class="fa fa-check"></i>&nbsp;{{ 'admin.selftest.label'|trans ({} , "ConnectorsCoreBundle") }}
+        </h4>
+        </br>
+    </li>
+    
+    <li>
+        <h4 class="font-md {% if connector.ping %}text-success{% else %}text-danger{% endif %}">
+            <i class="fa fa-check"></i>&nbsp;{{ 'admin.ping.label'|trans ({} , "ConnectorsCoreBundle") }}
+        </h4>
+        </br>
+    </li>
+    
+    <li>
+        <h4 class="font-md {% if connector.connect %}text-success{% else %}text-danger{% endif %}">
+            <i class="fa fa-check"></i>&nbsp;{{ 'admin.connect.label'|trans ({} , "ConnectorsCoreBundle") }}
+        </h4>
+{#        </br>#}
+    </li>
+    
+</ul>
+    
+<a 
+    id="node-webhooks-btn" class="btn-lg btn-block btn-warning text-center" 
+{#    href="{{ path('connectors_mailchimp_update_webhooks', { 'NodeId': node.id }) }}"#}
+    > 
+    <i class="fa fa-refresh"></i> 
+    {{ 'admin.webhooks.label'|trans }}
+</a>
+<!-- End Connection Block -->
+
