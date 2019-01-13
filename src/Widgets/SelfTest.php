@@ -53,7 +53,12 @@ class SelfTest extends AbstractStandaloneWidget
      */
     protected $connector;
     
-    public function __construct(MailChimpConnector $connector = null)
+    /**
+     * Class Constructor
+     *
+     * @param MailChimpConnector $connector
+     */
+    public function __construct(MailChimpConnector $connector)
     {
         $this->connector  =   $connector;
     }
@@ -64,8 +69,10 @@ class SelfTest extends AbstractStandaloneWidget
      * @param array $params Widget Inputs Parameters
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function get($params=null)
+    public function get($params = null)
     {
         //====================================================================//
         // Stack Trace
@@ -91,7 +98,10 @@ class SelfTest extends AbstractStandaloneWidget
 
         //====================================================================//
         // Set Blocks to Widget
-        $this->setBlocks($this->blocksFactory()->render());
+        $blocks = $this->blocksFactory()->render();
+        if ($blocks) {
+            $this->setBlocks($blocks);
+        }
 
         //====================================================================//
         // Publish Widget
@@ -115,31 +125,31 @@ class SelfTest extends AbstractStandaloneWidget
     {
         //====================================================================//
         // Get Log
-        $Log = Splash::log();
+        $log = Splash::log();
         //====================================================================//
         // If test was passed
-        if (empty($Log->err)) {
+        if (empty($log->err)) {
             $this->blocksFactory()->addNotificationsBlock(array("success" => "Self-Test Passed!"));
         }
         //====================================================================//
         // Add Error Notifications
-        foreach ($Log->err as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(array("error" => $Text));
+        foreach ($log->err as $text) {
+            $this->blocksFactory()->addNotificationsBlock(array("error" => $text));
         }
         //====================================================================//
         // Add Warning Notifications
-        foreach ($Log->war as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(array("warning" => $Text));
+        foreach ($log->war as $text) {
+            $this->blocksFactory()->addNotificationsBlock(array("warning" => $text));
         }
         //====================================================================//
         // Add Success Notifications
-        foreach ($Log->msg as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(array("success" => $Text));
+        foreach ($log->msg as $text) {
+            $this->blocksFactory()->addNotificationsBlock(array("success" => $text));
         }
         //====================================================================//
         // Add Debug Notifications
-        foreach ($Log->deb as $Text) {
-            $this->blocksFactory()->addNotificationsBlock(array("info" => $Text));
+        foreach ($log->deb as $text) {
+            $this->blocksFactory()->addNotificationsBlock(array("info" => $text));
         }
     }
 }

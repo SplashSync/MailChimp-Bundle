@@ -17,6 +17,9 @@ namespace Splash\Connectors\MailChimp\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * MailChimp Account Edit Form
+ */
 class EditFormType extends AbstractMailChimpType
 {
     /**

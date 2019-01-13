@@ -56,7 +56,12 @@ class ThirdParty extends AbstractStandaloneObject
      */
     protected $connector;
     
-    public function __construct(MailChimpConnector $parentConnector = null)
+    /**
+     * Class Constructor
+     *
+     * @param MailChimpConnector $parentConnector
+     */
+    public function __construct(MailChimpConnector $parentConnector)
     {
         $this->connector  =   $parentConnector;
     }

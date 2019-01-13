@@ -23,20 +23,11 @@ use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
 trait ObjectsListTrait
 {
     /**
-     *  @abstract     Return List Of Customer with required filters
+     * {@inheritdoc}
      *
-     *  @param        string  $filter                   Filters/Search String for Contact List.
-     *  @param        array   $params                   Search parameters for result List.
-     *                        $params["max"]            Maximum Number of results
-     *                        $params["offset"]         List Start Offset
-     *                        $params["sortfield"]      Field name for sort list (Available fields listed below)
-     *                        $params["sortorder"]      List Order Constraign (Default = ASC)
-     *
-     *  @return       array   $data                     List of all customers main data
-     *                        $data["meta"]["total"]     ==> Total Number of results
-     *                        $data["meta"]["current"]   ==> Total Number of results
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function ObjectsList($filter=null, $params=null)
+    public function objectsList($filter = null, $params = null)
     {
         //====================================================================//
         // Prepare Parameters
@@ -47,7 +38,7 @@ trait ObjectsListTrait
         }
         //====================================================================//
         // Get User Lists from Api
-        $rawData  =   API::get('lists/' . API::getList() . '/members', $body);
+        $rawData  =   API::get('lists/'.API::getList().'/members', $body);
         //====================================================================//
         // Request Failed
         if (null == $rawData) {
@@ -56,11 +47,14 @@ trait ObjectsListTrait
         //====================================================================//
         // Compute Totals
         $response   =   array(
-            'meta'  => array('current' => count($rawData->members), 'total' => $rawData->total_items)
+            // @codingStandardsIgnoreStart
+            'meta'  => array('current' => count($rawData->members), 'total' => $rawData->total_items),
+            // @codingStandardsIgnoreEnd
         );
         //====================================================================//
         // Parse Data in response
         foreach ($rawData->members as $member) {
+            // @codingStandardsIgnoreStart
             $response[]   = array(
                 'id'                =>      API::hash($member->email_address),
                 'email_address'     =>      $member->email_address,
@@ -68,6 +62,7 @@ trait ObjectsListTrait
                 'FNAME'             =>      $member->merge_fields->FNAME,
                 'LNAME'             =>      $member->merge_fields->LNAME,
             );
+            // @codingStandardsIgnoreEnd
         }
 
         return $response;

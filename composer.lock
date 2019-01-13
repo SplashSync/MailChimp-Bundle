@@ -4,20 +4,70 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42e9d7547d31d5267c987c2837a4f887",
+    "content-hash": "7b767584ed614683797ba9eb8d385e6f",
     "packages": [
+        {
+            "name": "nategood/httpful",
+            "version": "0.2.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nategood/httpful.git",
+                "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nategood/httpful/zipball/c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+                "reference": "c1cd4d46a4b281229032cf39d4dd852f9887c0f6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Httpful": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nate Good",
+                    "email": "me@nategood.com",
+                    "homepage": "http://nategood.com"
+                }
+            ],
+            "description": "A Readable, Chainable, REST friendly, PHP HTTP Client",
+            "homepage": "http://github.com/nategood/httpful",
+            "keywords": [
+                "api",
+                "curl",
+                "http",
+                "requests",
+                "rest",
+                "restful"
+            ],
+            "time": "2015-10-26T16:11:30+00:00"
+        },
         {
             "name": "splash/php-bundle",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Bundle.git",
-                "reference": "714efdf6a1fd410d2c750bb2343c992aed6791b8"
+                "reference": "114ca28ff00b518425b7a2e6cc24cbff244d40a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/714efdf6a1fd410d2c750bb2343c992aed6791b8",
-                "reference": "714efdf6a1fd410d2c750bb2343c992aed6791b8",
+                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/114ca28ff00b518425b7a2e6cc24cbff244d40a2",
+                "reference": "114ca28ff00b518425b7a2e6cc24cbff244d40a2",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +125,7 @@
                 }
             ],
             "description": "Splash Core Bundle for Symfony Applications",
-            "time": "2019-01-09T23:11:56+00:00"
+            "time": "2019-01-13T19:54:04+00:00"
         },
         {
             "name": "splash/phpcore",

@@ -31,7 +31,7 @@ trait CRUDTrait
      *
      * @return mixed
      */
-    public function Load($objectId)
+    public function load($objectId)
     {
         //====================================================================//
         // Stack Trace
@@ -43,7 +43,7 @@ trait CRUDTrait
         //====================================================================//
         // Fatch Object
         if (null == $mcObject) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to load Member (" . $objectId . ").");
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to load Member (".$objectId.").");
         }
 
         return $mcObject;
@@ -52,11 +52,9 @@ trait CRUDTrait
     /**
      * Create Request Object
      *
-     * @param array $List Given Object Data
-     *
-     * @return object New Object
+     * @return false|stdClass New Object
      */
-    public function Create()
+    public function create()
     {
         //====================================================================//
         // Stack Trace
@@ -84,9 +82,9 @@ trait CRUDTrait
      *
      * @param bool $needed Is This Update Needed
      *
-     * @return fale|string Object Id of False if Failed to Update
+     * @return false|string Object Id of False if Failed to Update
      */
-    public function Update(bool $needed)
+    public function update(bool $needed)
     {
         //====================================================================//
         // Stack Trace
@@ -103,20 +101,20 @@ trait CRUDTrait
         //====================================================================//
         // Update Object
         $response = API::put(
-                self::getBaseUri() . "/" . $this->object->id,
-                $this->object
-            );
+            self::getBaseUri()."/".$this->object->id,
+            $this->object
+        );
         if (is_null($response)) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update Member (" . $this->object->email_address . ").");
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update Member (".$this->object->email_address.").");
         }
         //====================================================================//
         // Update Object Id if Changed by this Request (Email Modified)
         if (isset($this->objectIdChanged) && $this->objectIdChanged) {
             $this->connector->objectIdChanged(
-                    "ThirdParty",
-                    $this->object->id,
-                    API::hash($this->object->email_address)
-                );
+                "ThirdParty",
+                $this->object->id,
+                API::hash($this->object->email_address)
+            );
         }
 
         return $this->object->id;
@@ -136,12 +134,9 @@ trait CRUDTrait
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Delete Object
-        $response = API::delete(
-                self::getBaseUri() . "/" . $objectId,
-                $this->object
-            );
-        if (true !==$response) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (" . $objectId . ").");
+        $response = API::delete(self::getBaseUri()."/".$objectId);
+        if (true !== $response) {
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (".$objectId.").");
         }
 
         return true;
@@ -150,13 +145,15 @@ trait CRUDTrait
     /**
      * Get Object CRUD Base Uri
      *
+     * @param string $email
+     *
      * @return string
      */
     private static function getBaseUri(string $email = null) : string
     {
-        $baseUri = 'lists/' . API::getList() . '/members/';
+        $baseUri = 'lists/'.API::getList().'/members/';
         if (!is_null($email)) {
-            return $baseUri . "/" . API::hash($email);
+            return $baseUri."/".API::hash($email);
         }
 
         return $baseUri;

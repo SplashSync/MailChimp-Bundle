@@ -107,7 +107,7 @@ class MailChimpHelper
      *
      * @return string $result
      */
-    public function hash($email) : string
+    public static function hash($email) : string
     {
         return md5(strtolower($email));
     }
@@ -132,7 +132,10 @@ class MailChimpHelper
         }
         //====================================================================//
         // Store EndPoint Url
-        self::$endPoint = self::getEndPoint($apiKey);
+        $endPoint = self::getEndPoint($apiKey);
+        if (!is_null($endPoint)) {
+            self::$endPoint = $endPoint;
+        }
         //====================================================================//
         // Store Current List to Use
         self::$apiList = is_string($apiList) ? $apiList : "";
@@ -181,7 +184,7 @@ class MailChimpHelper
 
             return false;
         }
-        if (($response->code >=200) && ($response->code<500)) {
+        if (($response->code >= 200) && ($response->code < 500)) {
             return true;
         }
 
@@ -215,7 +218,7 @@ class MailChimpHelper
         
         //====================================================================//
         // Return Connect Result
-        return (200 ==$response->code);
+        return (200 == $response->code);
     }
     
     /**
@@ -231,7 +234,7 @@ class MailChimpHelper
         //====================================================================//
         // Safety Check
         if (!self::isReady()) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Prepare Uri
@@ -268,7 +271,7 @@ class MailChimpHelper
         //====================================================================//
         // Safety Check
         if (!self::isReady()) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Perform Request
@@ -298,7 +301,7 @@ class MailChimpHelper
         //====================================================================//
         // Safety Check
         if (!self::isReady()) {
-            return false;
+            return null;
         }
         //====================================================================//
         // Perform Request
@@ -317,6 +320,8 @@ class MailChimpHelper
     
     /**
      * Analyze MailChimp Api Response & Push Errors to Splash Log
+     *
+     * @param Response $response
      *
      * @return bool TRUE is no Error
      */

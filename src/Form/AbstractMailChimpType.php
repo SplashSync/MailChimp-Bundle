@@ -33,6 +33,8 @@ abstract class AbstractMailChimpType extends AbstractType
      * @param array                $options
      *
      * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function addApiKeyField(FormBuilderInterface $builder, array $options)
     {

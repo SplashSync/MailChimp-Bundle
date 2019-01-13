@@ -54,7 +54,7 @@ trait MergeTrait
      * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
      *
-     * @return none
+     * @return void
      */
     protected function getMergeFields($key, $fieldName)
     {
@@ -77,7 +77,7 @@ trait MergeTrait
      * @param string $fieldName Field Identifier / Name
      * @param mixed  $fieldData Field Data
      *
-     * @return none
+     * @return void
      */
     protected function setMergeFields($fieldName, $fieldData)
     {

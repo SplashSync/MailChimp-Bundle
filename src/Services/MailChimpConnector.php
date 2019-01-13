@@ -36,7 +36,7 @@ class MailChimpConnector extends AbstractConnector
      * @var array
      */
     protected static $objectsMap = array(
-        "ThirdParty" => "Splash\\Connectors\\MailChimp\\Objects\\ThirdParty"
+        "ThirdParty" => "Splash\\Connectors\\MailChimp\\Objects\\ThirdParty",
     );
 
     /**
@@ -45,7 +45,7 @@ class MailChimpConnector extends AbstractConnector
      * @var array
      */
     protected static $widgetsMap = array(
-        "SelfTest" => "Splash\\Connectors\\MailChimp\\Widgets\\SelfTest"
+        "SelfTest" => "Splash\\Connectors\\MailChimp\\Widgets\\SelfTest",
     );
 
     /**
@@ -102,7 +102,7 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Get List Detailed Informations
-        $details  =   API::get('lists/' . $config["ApiList"]);
+        $details  =   API::get('lists/'.$config["ApiList"]);
         if (is_null($details)) {
             return $informations;
         }
@@ -118,13 +118,15 @@ class MailChimpConnector extends AbstractConnector
         $informations->town             =   $details->contact->city;
         $informations->country          =   $details->contact->country;
         $informations->www              =   "https://mailchimp.com";
+        // @codingStandardsIgnoreStart
         $informations->email            =   $details->campaign_defaults->from_email;
+        // @codingStandardsIgnoreEnd
         $informations->phone            =   $details->contact->phone;
         //====================================================================//
         // Server Logo & Ico
-        $informations->icoraw           =   Splash::file()->readFileContents(dirname(dirname(__FILE__))  . "/Resources/public/img/MailChimp-Icon.png");
+        $informations->icoraw           =   Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Icon.png");
         $informations->logourl          =   "https://developer.mailchimp.com/documentation/mailchimp/img/touch-icon-192x192.png";
-        $informations->logoraw          =   Splash::file()->readFileContents(dirname(dirname(__FILE__)) . "/Resources/public/img/MailChimp-Logo-Small.png");
+        $informations->logoraw          =   Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Logo-Small.png");
         //====================================================================//
         // Server Informations
         $informations->servertype       =   "MailChimp Api V3";
@@ -156,9 +158,9 @@ class MailChimpConnector extends AbstractConnector
         //====================================================================//
         // Configure Rest API
         return API::configure(
-                $config["ApiKey"],
-                isset($config["ApiList"]) ? $config["ApiList"] : null
-            );
+            $config["ApiKey"],
+            isset($config["ApiList"]) ? $config["ApiList"] : null
+        );
     }
     
     //====================================================================//
@@ -294,7 +296,7 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Parse Lists to Connector Settings
-        $listIndex  =array();
+        $listIndex = array();
         foreach ($response->lists as $listDetails) {
             //====================================================================//
             // Add List Index
