@@ -5,8 +5,8 @@ splash:
     connections:
 
         mailchimp:
-            id:                 ThisIsFakerWsId
-            key:                ThisIsNotASecretKeyForFaker
+            id:                 ThisIsMailChimpWsId
+            key:                ThisIsNotASecretKeyForMailChimp
             name:               Serveur 1 (MailChimp)
             host:               "%splash_host%/ws/soap"
             server_host:        "%splash_host%"
@@ -19,7 +19,7 @@ splash:
         faker:
             id:                 ThisIsFakerWsId
             key:                ThisIsNotASecretKeyForFaker
-            name:               Serveur 1 (Faker)
+            name:               Serveur 2 (Faker)
             host:               "%splash_host%/ws/soap"
             server_host:        "%splash_host%"
 
