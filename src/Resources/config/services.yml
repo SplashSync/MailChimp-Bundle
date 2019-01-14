@@ -1,7 +1,7 @@
 services:
     ################################################################################
     # SPLASH MailChimp Connector Service
-    spash.connectors.mailchimp:
+    splash.connectors.mailchimp:
         class: Splash\Connectors\MailChimp\Services\MailChimpConnector
         arguments:  [ "@event_dispatcher", "@logger" ]
         tags:       
