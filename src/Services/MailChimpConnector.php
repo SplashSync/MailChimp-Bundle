@@ -209,7 +209,7 @@ class MailChimpConnector extends AbstractConnector
             'label'     =>      'profile.card.label',                   // Public long name
             'domain'    =>      'MailChimpBundle',                      // Translation domain for names
             'ico'       =>      '/bundles/mailchimp/img/MailChimp-Icon.png',        // Public Icon path
-            'www'       =>      'www.splashsync.com',                   // Website Url
+            'www'       =>      'mailchimp.com',                        // Website Url
         );
     }
     
