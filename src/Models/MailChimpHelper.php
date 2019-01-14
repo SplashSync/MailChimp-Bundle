@@ -150,7 +150,7 @@ class MailChimpHelper
     {
         //====================================================================//
         // Safety Check
-        if (!empty(self::$endPoint)) {
+        if (empty(self::$endPoint)) {
             return false;
         }
         //====================================================================//
