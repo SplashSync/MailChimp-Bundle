@@ -19,8 +19,10 @@ profile:
 
 ## Node Api Actions
 admin:
+    selftest:   Configuration du Connecteur MailChimp
+    connect:    Connexion a l'API MailChimp    
     webhooks:
         label:  Configuration des WebHooks
         desc:   Détecte et Configure les WebHooks pour Splash Sync
-        msg:    Configuration des WebHooks Réussie
+        msg:    Configuration des WebHooks est Réussie
         err:    La Configuration des WebHooks a échouée

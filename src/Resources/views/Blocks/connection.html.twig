@@ -1,37 +1,44 @@
-{% trans_default_domain "ConnectorsMailChimpBundle" %}
+{% trans_default_domain "MailChimpBundle" %}
 
 <!-- Connection Block -->
 <ul class="list-unstyled">
    
     <li>
         <h4 class="font-md {% if connector.selfTest %}text-success{% else %}text-danger{% endif %}">
-            <i class="fa fa-check"></i>&nbsp;{{ 'admin.selftest.label'|trans ({} , "ConnectorsCoreBundle") }}
+            <i class="fa fa-check"></i>&nbsp;{{ 'admin.selftest'| trans }}
         </h4>
-        </br>
-    </li>
-    
-    <li>
-        <h4 class="font-md {% if connector.ping %}text-success{% else %}text-danger{% endif %}">
-            <i class="fa fa-check"></i>&nbsp;{{ 'admin.ping.label'|trans ({} , "ConnectorsCoreBundle") }}
-        </h4>
-        </br>
     </li>
     
     <li>
         <h4 class="font-md {% if connector.connect %}text-success{% else %}text-danger{% endif %}">
-            <i class="fa fa-check"></i>&nbsp;{{ 'admin.connect.label'|trans ({} , "ConnectorsCoreBundle") }}
+            <i class="fa fa-check"></i>&nbsp;{{ 'admin.connect'| trans }}
         </h4>
-{#        </br>#}
+    </li>
+    
+    <li>
+        {% if connector.verifyWebHooks %}
+        <h4 class="font-md text-success">
+            <i class="fa fa-check"></i>&nbsp;{{ 'admin.webhooks.msg'| trans }}
+        </h4>
+        {% else %}
+        <h4 class="font-md text-danger">
+            <i class="fa fa-times"></i>&nbsp;{{ 'admin.webhooks.err'| trans }}
+        </h4>
+        {% endif %}
     </li>
     
 </ul>
     
 <a 
     id="node-webhooks-btn" class="btn-lg btn-block btn-warning text-center" 
-{#    href="{{ path('connectors_mailchimp_update_webhooks', { 'NodeId': node.id }) }}"#}
+    href="{{ path('splash_connector_secured_action', { 
+            "connectorName" :   connector.profile.name, 
+            "webserviceId" :    connector.WebserviceId, 
+            "action" :          "webhooks"
+        }) }}"
     > 
     <i class="fa fa-refresh"></i> 
-    {{ 'admin.webhooks.label'|trans }}
+    {{ 'admin.webhooks.label' | trans }}
 </a>
 <!-- End Connection Block -->
 

@@ -19,8 +19,10 @@ profile:
 
 ## Node Api Actions
 admin:
+    selftest:   MailChimp Connector Configuration
+    connect:    Connect to MailChimp API
     webhooks:
         label:  Update of WebHooks
         desc:   Detect & Update Splash Sync WebHooks Configuration
-        msg:    WebHook Configuration Updated
-        err:    Update of WebHooks Configuration Failled
+        msg:    Mailchimp's WebHooks Configuration is Done
+        err:    Mailchimp's WebHooks Configuration Failed

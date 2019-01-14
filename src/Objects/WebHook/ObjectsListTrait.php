@@ -13,12 +13,12 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Connectors\MailChimp\Objects\ThirdParty;
+namespace   Splash\Connectors\MailChimp\Objects\WebHook;
 
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
 
 /**
- * MailChimp Users Objects List Functions
+ * MailChimp WebHook Objects List Functions
  */
 trait ObjectsListTrait
 {
@@ -38,7 +38,7 @@ trait ObjectsListTrait
         }
         //====================================================================//
         // Get User Lists from Api
-        $rawData  =   API::get('lists/'.API::getList().'/members', $body);
+        $rawData  =   API::get('lists/'.API::getList().'/webhooks', $body);
         //====================================================================//
         // Request Failed
         if (null == $rawData) {
@@ -48,21 +48,16 @@ trait ObjectsListTrait
         // Compute Totals
         $response   =   array(
             // @codingStandardsIgnoreStart
-            'meta'  => array('current' => count($rawData->members), 'total' => $rawData->total_items),
+            'meta'  => array('current' => count($rawData->webhooks), 'total' => $rawData->total_items),
             // @codingStandardsIgnoreEnd
         );
         //====================================================================//
         // Parse Data in response
-        foreach ($rawData->members as $member) {
-            // @codingStandardsIgnoreStart
+        foreach ($rawData->webhooks as $webhook) {
             $response[]   = array(
-                'id'                =>      self::hash($member->email_address),
-                'email_address'     =>      $member->email_address,
-                'status'            =>      ucwords($member->status),
-                'FNAME'             =>      $member->merge_fields->FNAME,
-                'LNAME'             =>      $member->merge_fields->LNAME,
+                'id'                =>      $webhook->id,
+                'url'               =>      $webhook->url,
             );
-            // @codingStandardsIgnoreEnd
         }
 
         return $response;

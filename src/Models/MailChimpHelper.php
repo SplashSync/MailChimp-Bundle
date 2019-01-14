@@ -101,18 +101,6 @@ class MailChimpHelper
     }
     
     /**
-     * Get MailChimp Subscriber Hash
-     *
-     * @param mixed $email
-     *
-     * @return string $result
-     */
-    public static function hash($email) : string
-    {
-        return md5(strtolower($email));
-    }
-    
-    /**
      * Congigure MailChimp REST API
      *
      * @param string $apiKey
@@ -154,16 +142,6 @@ class MailChimpHelper
     }
     
     /**
-     * Check if API is Configured & Ready
-     *
-     * @return bool
-     */
-    public static function isReady(): bool
-    {
-        return !empty(self::$endPoint);
-    }
-    
-    /**
      * Ping MailChimp API Url as Annonymous User
      *
      * @return bool
@@ -172,7 +150,7 @@ class MailChimpHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isReady()) {
+        if (!empty(self::$endPoint)) {
             return false;
         }
         //====================================================================//
@@ -200,7 +178,7 @@ class MailChimpHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isReady()) {
+        if (empty(self::$endPoint)) {
             return false;
         }
         //====================================================================//
@@ -233,7 +211,7 @@ class MailChimpHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isReady()) {
+        if (empty(self::$endPoint)) {
             return null;
         }
         //====================================================================//
@@ -270,7 +248,7 @@ class MailChimpHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isReady()) {
+        if (empty(self::$endPoint)) {
             return null;
         }
         //====================================================================//
@@ -288,7 +266,38 @@ class MailChimpHelper
         // Catch Errors inResponse
         return self::catchErrors($response) ? $response->body : null;
     }
+    
+    /**
+     * MailChimp API POST Request
+     *
+     * @param string   $path API REST Path
+     * @param stdClass $body Request Data
+     *
+     * @return null|stdClass
+     */
+    public static function post(string $path, stdClass $body = null): ?stdClass
+    {
+        //====================================================================//
+        // Safety Check
+        if (empty(self::$endPoint)) {
+            return null;
+        }
+        //====================================================================//
+        // Perform Request
+        try {
+            $response = Request::post(self::$endPoint.$path)
+                ->body($body)
+                ->send();
+        } catch (ConnectionErrorException $ex) {
+            Splash::log()->err($ex->getMessage());
 
+            return null;
+        }
+        //====================================================================//
+        // Catch Errors inResponse
+        return self::catchErrors($response) ? $response->body : null;
+    }
+    
     /**
      * MailChimp API DELETE Request
      *
@@ -300,7 +309,7 @@ class MailChimpHelper
     {
         //====================================================================//
         // Safety Check
-        if (!self::isReady()) {
+        if (empty(self::$endPoint)) {
             return null;
         }
         //====================================================================//

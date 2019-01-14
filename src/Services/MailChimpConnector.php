@@ -20,7 +20,9 @@ use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\MailChimp\Form\EditFormType;
 use Splash\Connectors\MailChimp\Form\NewFormType;
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
+use Splash\Connectors\MailChimp\Objects\WebHook;
 use Splash\Core\SplashCore as Splash;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * MailChimp REST API Connector for Splash
@@ -256,7 +258,9 @@ class MailChimpConnector extends AbstractConnector
      */
     public function getPublicActions() : array
     {
-        return array();
+        return array(
+            "index" => "MailChimpBundle:WebHooks:index",
+        );
     }
 
     /**
@@ -265,14 +269,125 @@ class MailChimpConnector extends AbstractConnector
     public function getSecuredActions() : array
     {
         return array(
-            //            "newhost" => "SoapBundle:Actions:host",
-            //            "newkeys" => "SoapBundle:Actions:keys",
+            "webhooks" => "MailChimpBundle:Actions:webhooks",
         );
     }
     
     //====================================================================//
     //  HIGH LEVEL WEBSERVICE CALLS
     //====================================================================//
+    
+    /**
+     * Check & Update MailChimp Api Account WebHooks.
+     *
+     * @return bool
+     */
+    public function verifyWebHooks() : bool
+    {
+        //====================================================================//
+        // Connector SelfTest
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
+        // Generate WebHook Url
+        $webHookServer  =   filter_input(INPUT_SERVER, 'SERVER_NAME');
+        //====================================================================//
+        // When Running on a Local Server
+        if (false !== strpos("localhost", $webHookServer)) {
+            $webHookServer  =   "www.splashsync.com";
+        }
+        //====================================================================//
+        // Create Object Class
+        $webHookManager = new WebHook($this);
+        $webHookManager->configure("webhook", $this->getWebserviceId(), $this->getConfiguration());
+        //====================================================================//
+        // Get List Of WebHooks for this List
+        $webHooks       =   $webHookManager->objectsList();
+        if (isset($webHooks["meta"])) {
+            unset($webHooks["meta"]);
+        }
+        //====================================================================//
+        // Filter & Clean List Of WebHooks
+        foreach ($webHooks as $webHook) {
+            //====================================================================//
+            // This is a Splash WebHooks
+            if (false !== strpos(trim($webHook['url']), $webHookServer)) {
+                return true;
+            }
+        }
+        //====================================================================//
+        // Splash WebHooks was NOT Found
+        return false;
+    }
+    
+    /**
+     * Check & Update MailChimp Api Account WebHooks.
+     *
+     * @param RouterInterface $router
+     *
+     * @return bool
+     */
+    public function updateWebHooks(RouterInterface $router) : bool
+    {
+        //====================================================================//
+        // Connector SelfTest
+        if (!$this->selfTest()) {
+            return false;
+        }
+        //====================================================================//
+        // Generate WebHook Url
+        $webHookServer  =   filter_input(INPUT_SERVER, 'SERVER_NAME');
+        $webHookUrl     =   $router->generate(
+            'splash_connector_action',
+            array(
+                'connectorName' => $this->getProfile()["name"],
+                'webserviceId' => $this->getWebserviceId(),
+            ),
+            RouterInterface::ABSOLUTE_URL
+        );
+        //====================================================================//
+        // When Running on a Local Server
+        if (false !== strpos("localhost", $webHookServer)) {
+            $webHookServer  =   "www.splashsync.com";
+            $webHookUrl     =   "https://www.splashsync.com/en/ws/mailchimp/123456";
+        }
+        //====================================================================//
+        // Create Object Class
+        $webHookManager = new WebHook($this);
+        $webHookManager->configure("webhook", $this->getWebserviceId(), $this->getConfiguration());
+        //====================================================================//
+        // Get List Of WebHooks for this List
+        $webHooks       =   $webHookManager->objectsList();
+        if (isset($webHooks["meta"])) {
+            unset($webHooks["meta"]);
+        }
+        //====================================================================//
+        // Filter & Clean List Of WebHooks
+        $foundWebHook   =    false;
+        foreach ($webHooks as $webHook) {
+            //====================================================================//
+            // This is Current Node WebHooks
+            if (trim($webHook['url']) ==  $webHookUrl) {
+                $foundWebHook   =   true;
+
+                continue;
+            }
+            //====================================================================//
+            // This is a Splash WebHooks
+            if (false !== strpos(trim($webHook['url']), $webHookServer)) {
+                $webHookManager->delete($webHook['id']);
+            }
+        }
+        //====================================================================//
+        // Splash WebHooks was Found
+        if ($foundWebHook) {
+            return true;
+        }
+        //====================================================================//
+        // Add Splash WebHooks
+        return (false !== $webHookManager->create($webHookUrl));
+    }
     
     //====================================================================//
     //  LOW LEVEL PRIVATE FUNCTIONS

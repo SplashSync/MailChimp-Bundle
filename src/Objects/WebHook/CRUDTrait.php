@@ -13,29 +13,17 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
+namespace Splash\Connectors\MailChimp\Objects\WebHook;
 
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
 use Splash\Core\SplashCore      as Splash;
 use stdClass;
 
 /**
- * MailChimp Users CRUD Functions
+ * MailChimp WebHook CRUD Functions
  */
 trait CRUDTrait
 {
-    /**
-     * Get MailChimp Subscriber Hash
-     *
-     * @param mixed $email
-     *
-     * @return string $result
-     */
-    public static function hash($email) : string
-    {
-        return md5(strtolower($email));
-    }
-    
     /**
      * Load Request Object
      *
@@ -48,43 +36,68 @@ trait CRUDTrait
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
-        $this->objectIdChanged = false;
         //====================================================================//
         // Execute Read Request
-        $mcObject = API::get(self::getBaseUri().$objectId);
+        $mcWebHook = API::get(self::getUri($objectId));
         //====================================================================//
         // Fatch Object
-        if (null == $mcObject) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to load Member (".$objectId.").");
+        if (null == $mcWebHook) {
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to load WebHook (".$objectId.").");
         }
 
-        return $mcObject;
+        return $mcWebHook;
     }
 
     /**
      * Create Request Object
      *
+     * @param string $url
+     *
      * @return false|stdClass New Object
      */
-    public function create()
+    public function create(string $url = null)
     {
         //====================================================================//
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Check Customer Name is given
-        if (empty($this->in["email_address"])) {
-            return Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, "email_address");
+        if (empty($url) && empty($this->in["url"])) {
+            return Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, "url");
         }
         //====================================================================//
         // Init Object
         $this->object = new stdClass();
         //====================================================================//
         // Pre-Setup of Member
-        $this->setSimple("email_address", $this->in["email_address"]);
-        $this->setSimple("status_if_new", "subscribed");
-        $this->setSimple("status", "subscribed");
-        $this->needUpdate();
+        $this->setSimple("url", empty($url) ? $this->in["url"] : $url);
+        //====================================================================//
+        // WebHooks Events Triggers
+        $events = new stdClass();
+        $events->subscribe = true;
+        $events->unsubscribe = true;
+        $events->subscribe = true;
+        $events->profile = true;
+        $events->cleaned = true;
+        $events->campaign = true;
+        $this->setSimple("events", $events);
+        //====================================================================//
+        // WebHooks Events Sources
+        $sources = new stdClass();
+        $sources->user = true;
+        $sources->admin = true;
+        $sources->api = false;
+        $this->setSimple("status", $sources);
+               
+        //====================================================================//
+        // Create Object
+        $this->object = API::post(
+            self::getUri(),
+            $this->object
+        );
+        if (is_null($this->object) || empty($this->object->id)) {
+            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update WebHook");
+        }
 
         return $this->object;
     }
@@ -104,41 +117,17 @@ trait CRUDTrait
         if (!$needed) {
             return $this->object->id;
         }
+        //====================================================================//
+        // Update Not Allowed
+        Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " WebHook Update is diasbled.");
         
-        //====================================================================//
-        // Generate id If Needed
-        if (!isset($this->object->id) || empty($this->object->id)) {
-            $this->object->id   =   self::hash($this->object->email_address);
-        }
-        //====================================================================//
-        // Update Object
-        $response = API::put(
-            self::getBaseUri()."/".$this->object->id,
-            $this->object
-        );
-
-        if (is_null($response) || ($response->id != self::hash($this->object->email_address))) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update Member (".$this->object->email_address.").");
-        }
-        //====================================================================//
-        // Update Object Id if Changed by this Request (Email Modified)
-        if (isset($this->objectIdChanged) && $this->objectIdChanged) {
-            $this->connector->objectIdChanged(
-                "ThirdParty",
-                $this->object->id,
-                self::hash($this->object->email_address)
-            );
-
-            return self::hash($this->object->email_address);
-        }
-
         return $this->object->id;
     }
     
     /**
      * Delete requested Object
      *
-     * @param int $objectId Object Id
+     * @param string $objectId Object Id
      *
      * @return bool
      */
@@ -149,7 +138,7 @@ trait CRUDTrait
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         //====================================================================//
         // Delete Object
-        $response = API::delete(self::getBaseUri()."/".$objectId);
+        $response = API::delete(self::getUri($objectId));
         if (null === $response) {
             return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (".$objectId.").");
         }
@@ -158,17 +147,17 @@ trait CRUDTrait
     }
     
     /**
-     * Get Object CRUD Base Uri
+     * Get Object CRUD Uri
      *
-     * @param string $email
+     * @param string $objectId
      *
      * @return string
      */
-    private static function getBaseUri(string $email = null) : string
+    private static function getUri(string $objectId = null) : string
     {
-        $baseUri = 'lists/'.API::getList().'/members/';
-        if (!is_null($email)) {
-            return $baseUri."/".self::hash($email);
+        $baseUri = 'lists/'.API::getList().'/webhooks';
+        if (!is_null($objectId)) {
+            return $baseUri."/".$objectId;
         }
 
         return $baseUri;
