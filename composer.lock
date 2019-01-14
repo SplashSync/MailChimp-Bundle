@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c8515d342dbcc1518f1c1f3e7b3b71e",
+    "content-hash": "3a367252fe233ff5991d9582f65a9b88",
     "packages": [
         {
             "name": "nategood/httpful",
@@ -62,12 +62,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Bundle.git",
-                "reference": "114ca28ff00b518425b7a2e6cc24cbff244d40a2"
+                "reference": "4f48cabf93491d84a708241cdeb7ec264108ce3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/114ca28ff00b518425b7a2e6cc24cbff244d40a2",
-                "reference": "114ca28ff00b518425b7a2e6cc24cbff244d40a2",
+                "url": "https://api.github.com/repos/SplashSync/Php-Bundle/zipball/4f48cabf93491d84a708241cdeb7ec264108ce3b",
+                "reference": "4f48cabf93491d84a708241cdeb7ec264108ce3b",
                 "shasum": ""
             },
             "require": {
@@ -125,7 +125,7 @@
                 }
             ],
             "description": "Splash Core Bundle for Symfony Applications",
-            "time": "2019-01-13T19:54:04+00:00"
+            "time": "2019-01-14T04:19:15+00:00"
         },
         {
             "name": "splash/phpcore",
@@ -133,12 +133,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SplashSync/Php-Core.git",
-                "reference": "0b2e48c7ce9db1a4f908675c64bb9ad6ada1543b"
+                "reference": "8adbc3a1b683c1c2cf1481f09a0ab1b4297db2d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/0b2e48c7ce9db1a4f908675c64bb9ad6ada1543b",
-                "reference": "0b2e48c7ce9db1a4f908675c64bb9ad6ada1543b",
+                "url": "https://api.github.com/repos/SplashSync/Php-Core/zipball/8adbc3a1b683c1c2cf1481f09a0ab1b4297db2d9",
+                "reference": "8adbc3a1b683c1c2cf1481f09a0ab1b4297db2d9",
                 "shasum": ""
             },
             "require": {
@@ -185,7 +185,7 @@
                 }
             ],
             "description": "Splash Fundation Module for All Php Applications",
-            "time": "2019-01-07T20:15:30+00:00"
+            "time": "2019-01-14T04:18:50+00:00"
         }
     ],
     "packages-dev": [

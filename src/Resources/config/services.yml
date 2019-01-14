@@ -7,6 +7,9 @@ services:
         tags:       
             - { name: "splash.connector"}
 
-
-        
-            
+    ################################################################################
+    # Enables Dependency Injection in Controller Actions
+    Splash\Connectors\MailChimp\Controller\:
+        resource: '../../Controller'
+        public: true
+        tags: ['controller.service_arguments']

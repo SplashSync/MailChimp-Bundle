@@ -17,15 +17,15 @@
 
     <testsuites>
         <testsuite name="All">
-            <directory>Tests/*</directory>
             <directory>vendor/splash/phpcore/Tests/*</directory>
             <directory>vendor/splash/php-bundle/tests/*</directory>
+            <directory>tests/Controller</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>Tests</directory>
+            <directory>tests/Controller</directory>
             <directory>vendor/splash/phpcore</directory>
             <directory>vendor/splash/php-bundle</directory>
             <exclude>
