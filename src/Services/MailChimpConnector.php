@@ -250,7 +250,7 @@ class MailChimpConnector extends AbstractConnector
      */
     public function getMasterAction()
     {
-        return "SoapBundle:Soap:master";
+        return null;
     }
     
     /**
