@@ -30,17 +30,20 @@ class WebHooksController extends Controller
     /**
      * Execute WebHook Actions for A MailChimp Connector
      *
+     * @param LoggerInterface   $logger
      * @param Request           $request
      * @param AbstractConnector $connector
      *
      * @return JsonResponse
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function indexAction(LoggerInterface $logger, Request $request, AbstractConnector $connector)
     {
         //====================================================================//
         // For Mailchimp Ping GET
         if ($request->isMethod('GET')) {
-            $logger->error(__CLASS__ . '::'.__FUNCTION__. ' MailChimp Ping.', $request->attributes->all());
+            $logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Ping.', $request->attributes->all());
 
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
@@ -52,12 +55,12 @@ class WebHooksController extends Controller
         
         //====================================================================//
         // Log MailChimp Request
-        $logger->info(__CLASS__ . '::'.__FUNCTION__. ' WebHook Type ' . $type . '.', (is_array($data) ? $data : array()));
+        $logger->info(__CLASS__.'::'.__FUNCTION__.' WebHook Type '.$type.'.', (is_array($data) ? $data : array()));
         
         //====================================================================//
         // Verify Impacted List is Node Selected List
         if ($connector->getParameter('ApiList') != $data["list_id"]) {
-            $logger->error(__CLASS__ . '::'.__FUNCTION__. ' MailChimp Wrong List.', $request->attributes->all());
+            $logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Wrong List.', $request->attributes->all());
 
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
@@ -75,8 +78,8 @@ class WebHooksController extends Controller
             // Update Object Id as Changed by this Request (Email Modified)
             $connector->objectIdChanged(
                 "ThirdParty",
-                 ThirdParty::hash($data["old_email"]),
-                 ThirdParty::hash($data["new_email"])
+                ThirdParty::hash($data["old_email"]),
+                ThirdParty::hash($data["new_email"])
             );
             $action     =   SPL_A_UPDATE;
             $objectId   =   ThirdParty::hash($data["new_email"]);

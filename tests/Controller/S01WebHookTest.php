@@ -13,12 +13,15 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Connectors\MailChimp\Tests\Controller;
+namespace Splash\Connectors\MailChimp\Test\Controller;
 
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
 use Splash\Connectors\MailChimp\Services\MailChimpConnector;
 use Splash\Tests\Tools\TestCase;
 
+/**
+ * Test of MailChimp Connector WebHook Controller
+ */
 class S01WebHookTest extends TestCase
 {
     const PING_RESPONSE = '{"success":true,"ping":"pong"}';
@@ -62,8 +65,8 @@ class S01WebHookTest extends TestCase
         // Prepare Request
         $data  = array(
             "data" => array(
-                "list_id" => $connector->getParameter("ApiList")
-            )
+                "list_id" => $connector->getParameter("ApiList"),
+            ),
         );
 
         //====================================================================//
@@ -79,8 +82,8 @@ class S01WebHookTest extends TestCase
         // Prepare Request
         $data2  = array(
             "data" => array(
-                "list_id" => "ThisIsWrong"
-            )
+                "list_id" => "ThisIsWrong",
+            ),
         );
         
         //====================================================================//
@@ -97,8 +100,8 @@ class S01WebHookTest extends TestCase
         $data3  = array(
             "type" => "ThisIsWrong",
             "data" => array(
-                "list_id" => $connector->getParameter("ApiList")
-            )
+                "list_id" => $connector->getParameter("ApiList"),
+            ),
         );
 
         //====================================================================//
@@ -111,6 +114,12 @@ class S01WebHookTest extends TestCase
      * Test WebHook Member Delete
      *
      * @dataProvider webHooksInputsProvider
+     *
+     * @param string $type
+     * @param array  $data
+     * @param string $objectType
+     * @param string $action
+     * @param string $objectId
      */
     public function testWebhookRequest(string $type, array $data, string $objectType, string $action, string $objectId)
     {
@@ -124,18 +133,18 @@ class S01WebHookTest extends TestCase
         $post  = array(
             "type" => $type,
             "data" => array_replace_recursive(
-                    array("list_id" => $connector->getParameter("ApiList")),
-                    $data
-                )
+                array("list_id" => $connector->getParameter("ApiList")),
+                $data
+            ),
         );
 
         //====================================================================//
         // Touch Url
         $this->assertPublicActionWorks($connector, null, $post, "POST");
         $this->assertEquals(
-                json_encode(array("success" => true, "type" => $type)),
-                $this->getResponseContents()
-            );
+            json_encode(array("success" => true, "type" => $type)),
+            $this->getResponseContents()
+        );
 
         //====================================================================//
         // Verify Response
@@ -157,7 +166,7 @@ class S01WebHookTest extends TestCase
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SPL_A_UPDATE,
-                ThirdParty::hash(self::FAKE_EMAIL)
+                ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
             //====================================================================//
@@ -167,7 +176,7 @@ class S01WebHookTest extends TestCase
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SPL_A_UPDATE,
-                ThirdParty::hash(self::FAKE_EMAIL)
+                ThirdParty::hash(self::FAKE_EMAIL),
             ),
             
             //====================================================================//
@@ -175,12 +184,12 @@ class S01WebHookTest extends TestCase
             array(
                 "upemail",
                 array(
-                    "old_email" => "old." . self::FAKE_EMAIL,
-                    "new_email" => self::FAKE_EMAIL
+                    "old_email" => "old.".self::FAKE_EMAIL,
+                    "new_email" => self::FAKE_EMAIL,
                 ),
                 self::MEMBER,
                 SPL_A_UPDATE,
-                ThirdParty::hash(self::FAKE_EMAIL)
+                ThirdParty::hash(self::FAKE_EMAIL),
             ),
             
             //====================================================================//
@@ -190,7 +199,7 @@ class S01WebHookTest extends TestCase
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SPL_A_UPDATE,
-                ThirdParty::hash(self::FAKE_EMAIL)
+                ThirdParty::hash(self::FAKE_EMAIL),
             ),
             
             //====================================================================//
@@ -200,7 +209,7 @@ class S01WebHookTest extends TestCase
                 array("email" => self::FAKE_EMAIL, "action" => "delete"),
                 self::MEMBER,
                 SPL_A_DELETE,
-                ThirdParty::hash(self::FAKE_EMAIL)
+                ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
             //====================================================================//
@@ -210,7 +219,7 @@ class S01WebHookTest extends TestCase
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SPL_A_DELETE,
-                ThirdParty::hash(self::FAKE_EMAIL)
+                ThirdParty::hash(self::FAKE_EMAIL),
             ),
         );
     }
