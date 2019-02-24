@@ -102,7 +102,7 @@ trait CRUDTrait
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         if (!$needed) {
-            return $this->object->id;
+            return $this->getObjectIdentifier();
         }
         
         //====================================================================//
@@ -132,7 +132,7 @@ trait CRUDTrait
             return self::hash($this->object->email_address);
         }
 
-        return $this->object->id;
+        return $this->getObjectIdentifier();
     }
     
     /**
@@ -155,6 +155,18 @@ trait CRUDTrait
         }
 
         return true;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectIdentifier()
+    {
+        if (!isset($this->object->id)) {
+            return false;
+        }
+
+        return $this->object->id;
     }
     
     /**

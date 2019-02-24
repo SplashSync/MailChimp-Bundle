@@ -115,13 +115,13 @@ trait CRUDTrait
         // Stack Trace
         Splash::log()->trace(__CLASS__, __FUNCTION__);
         if (!$needed) {
-            return $this->object->id;
+            return $this->getObjectIdentifier();
         }
         //====================================================================//
         // Update Not Allowed
         Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " WebHook Update is diasbled.");
         
-        return $this->object->id;
+        return $this->getObjectIdentifier();
     }
     
     /**
@@ -144,6 +144,18 @@ trait CRUDTrait
         }
 
         return true;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectIdentifier()
+    {
+        if (!isset($this->object->id)) {
+            return false;
+        }
+
+        return $this->object->id;
     }
     
     /**
