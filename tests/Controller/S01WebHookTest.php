@@ -27,7 +27,7 @@ class S01WebHookTest extends TestCase
     const PING_RESPONSE = '{"success":true,"ping":"pong"}';
     const MEMBER = "ThirdParty";
     const FAKE_EMAIL = "fake@exemple.com";
-   
+
     /**
      * Test WebHook For Ping
      */
@@ -37,12 +37,12 @@ class S01WebHookTest extends TestCase
         // Load Connector
         $connector = $this->getConnector("mailchimp");
         $this->assertInstanceOf(MailChimpConnector::class, $connector);
-        
+
         //====================================================================//
         // Touch Url
         $this->assertPublicActionWorks($connector);
         $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
-        
+
         $this->assertPublicActionWorks($connector, null, array(), "POST");
         $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
     }
@@ -63,7 +63,7 @@ class S01WebHookTest extends TestCase
 
         //====================================================================//
         // Prepare Request
-        $data  = array(
+        $data = array(
             "data" => array(
                 "list_id" => $connector->getParameter("ApiList"),
             ),
@@ -73,31 +73,31 @@ class S01WebHookTest extends TestCase
         // Touch Url
         $this->assertPublicActionWorks($connector, null, $data, "GET");
         $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
-        
+
         //====================================================================//
         // WRONG LIST ID
         //====================================================================//
 
         //====================================================================//
         // Prepare Request
-        $data2  = array(
+        $data2 = array(
             "data" => array(
                 "list_id" => "ThisIsWrong",
             ),
         );
-        
+
         //====================================================================//
         // Touch Url
         $this->assertPublicActionWorks($connector, null, $data2, "POST");
         $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
-        
+
         //====================================================================//
         // GOOD LIST ID BUT WRONG TYPE
         //====================================================================//
 
         //====================================================================//
         // Prepare Request
-        $data3  = array(
+        $data3 = array(
             "type" => "ThisIsWrong",
             "data" => array(
                 "list_id" => $connector->getParameter("ApiList"),
@@ -127,10 +127,10 @@ class S01WebHookTest extends TestCase
         // Load Connector
         $connector = $this->getConnector("mailchimp");
         $this->assertInstanceOf(MailChimpConnector::class, $connector);
-        
+
         //====================================================================//
         // Prepare Request
-        $post  = array(
+        $post = array(
             "type" => $type,
             "data" => array_replace_recursive(
                 array("list_id" => $connector->getParameter("ApiList")),
@@ -178,7 +178,7 @@ class S01WebHookTest extends TestCase
                 SPL_A_UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
-            
+
             //====================================================================//
             // Update Email
             array(
@@ -191,7 +191,7 @@ class S01WebHookTest extends TestCase
                 SPL_A_UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
-            
+
             //====================================================================//
             // Unsubscribe & No Delete
             array(
@@ -201,7 +201,7 @@ class S01WebHookTest extends TestCase
                 SPL_A_UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
-            
+
             //====================================================================//
             // Unsubscribe & Delete
             array(

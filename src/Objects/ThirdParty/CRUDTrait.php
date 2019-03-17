@@ -35,7 +35,7 @@ trait CRUDTrait
     {
         return md5(strtolower($email));
     }
-    
+
     /**
      * Load Request Object
      *
@@ -88,7 +88,7 @@ trait CRUDTrait
 
         return $this->object;
     }
-    
+
     /**
      * Update Request Object
      *
@@ -104,11 +104,11 @@ trait CRUDTrait
         if (!$needed) {
             return $this->getObjectIdentifier();
         }
-        
+
         //====================================================================//
         // Generate id If Needed
         if (!isset($this->object->id) || empty($this->object->id)) {
-            $this->object->id   =   self::hash($this->object->email_address);
+            $this->object->id = self::hash($this->object->email_address);
         }
         //====================================================================//
         // Update Object
@@ -134,7 +134,7 @@ trait CRUDTrait
 
         return $this->getObjectIdentifier();
     }
-    
+
     /**
      * Delete requested Object
      *
@@ -156,7 +156,7 @@ trait CRUDTrait
 
         return true;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -168,7 +168,7 @@ trait CRUDTrait
 
         return $this->object->id;
     }
-    
+
     /**
      * Get Object CRUD Base Uri
      *

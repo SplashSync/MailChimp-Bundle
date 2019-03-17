@@ -31,32 +31,32 @@ trait ObjectsListTrait
     {
         //====================================================================//
         // Prepare Parameters
-        $body     =    array();
+        $body = array();
         if (isset($params["max"], $params["offset"])) {
-            $body['count']    =   $params["max"];
-            $body['offset']   =   $params["offset"];
+            $body['count'] = $params["max"];
+            $body['offset'] = $params["offset"];
         }
         //====================================================================//
         // Get User Lists from Api
-        $rawData  =   API::get('lists/'.API::getList().'/webhooks', $body);
+        $rawData = API::get('lists/'.API::getList().'/webhooks', $body);
         //====================================================================//
         // Request Failed
         if (null == $rawData) {
-            return array( 'meta'    => array('current' => 0, 'total' => 0));
+            return array( 'meta' => array('current' => 0, 'total' => 0));
         }
         //====================================================================//
         // Compute Totals
-        $response   =   array(
+        $response = array(
             // @codingStandardsIgnoreStart
-            'meta'  => array('current' => count($rawData->webhooks), 'total' => $rawData->total_items),
+            'meta' => array('current' => count($rawData->webhooks), 'total' => $rawData->total_items),
             // @codingStandardsIgnoreEnd
         );
         //====================================================================//
         // Parse Data in response
         foreach ($rawData->webhooks as $webhook) {
-            $response[]   = array(
-                'id'                =>      $webhook->id,
-                'url'               =>      $webhook->url,
+            $response[] = array(
+                'id' => $webhook->id,
+                'url' => $webhook->url,
             );
         }
 

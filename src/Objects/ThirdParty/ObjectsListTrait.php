@@ -31,36 +31,36 @@ trait ObjectsListTrait
     {
         //====================================================================//
         // Prepare Parameters
-        $body     =    array();
+        $body = array();
         if (isset($params["max"], $params["offset"])) {
-            $body['count']    =   $params["max"];
-            $body['offset']   =   $params["offset"];
+            $body['count'] = $params["max"];
+            $body['offset'] = $params["offset"];
         }
         //====================================================================//
         // Get User Lists from Api
-        $rawData  =   API::get('lists/'.API::getList().'/members', $body);
+        $rawData = API::get('lists/'.API::getList().'/members', $body);
         //====================================================================//
         // Request Failed
         if (null == $rawData) {
-            return array( 'meta'    => array('current' => 0, 'total' => 0));
+            return array( 'meta' => array('current' => 0, 'total' => 0));
         }
         //====================================================================//
         // Compute Totals
-        $response   =   array(
+        $response = array(
             // @codingStandardsIgnoreStart
-            'meta'  => array('current' => count($rawData->members), 'total' => $rawData->total_items),
+            'meta' => array('current' => count($rawData->members), 'total' => $rawData->total_items),
             // @codingStandardsIgnoreEnd
         );
         //====================================================================//
         // Parse Data in response
         foreach ($rawData->members as $member) {
             // @codingStandardsIgnoreStart
-            $response[]   = array(
-                'id'                =>      self::hash($member->email_address),
-                'email_address'     =>      $member->email_address,
-                'status'            =>      ucwords($member->status),
-                'FNAME'             =>      $member->merge_fields->FNAME,
-                'LNAME'             =>      $member->merge_fields->LNAME,
+            $response[] = array(
+                'id' => self::hash($member->email_address),
+                'email_address' => $member->email_address,
+                'status' => ucwords($member->status),
+                'FNAME' => $member->merge_fields->FNAME,
+                'LNAME' => $member->merge_fields->LNAME,
             );
             // @codingStandardsIgnoreEnd
         }

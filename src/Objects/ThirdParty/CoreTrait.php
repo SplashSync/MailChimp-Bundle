@@ -24,7 +24,7 @@ trait CoreTrait
      * @var bool
      */
     protected $objectIdChanged = false;
-    
+
     /**
      * Build Core Fields using FieldFactory
      */
@@ -38,7 +38,7 @@ trait CoreTrait
             ->MicroData("http://schema.org/ContactPoint", "email")
             ->isRequired()
             ->isListed();
-        
+
         //====================================================================//
         // Subscribed
         $this->fieldsFactory()->create(SPL_T_BOOL)
@@ -47,7 +47,7 @@ trait CoreTrait
             ->MicroData("http://schema.org/Organization", "newsletter")
             ->isNotTested()
             ->isListed();
-        
+
         //====================================================================//
         // VIP
         $this->fieldsFactory()->create(SPL_T_BOOL)
@@ -61,8 +61,6 @@ trait CoreTrait
      *
      * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
-     *
-     * @return void
      */
     protected function getCoreFields($key, $fieldName)
     {
@@ -82,19 +80,17 @@ trait CoreTrait
             default:
                 return;
         }
-        
+
         //====================================================================//
         // Clear Key Flag
         unset($this->in[$key]);
     }
-    
+
     /**
      * Write Given Fields
      *
      * @param string $fieldName Field Identifier / Name
      * @param mixed  $fieldData Field Data
-     *
-     * @return void
      */
     protected function setCoreFields($fieldName, $fieldData)
     {
@@ -107,7 +103,7 @@ trait CoreTrait
                     $this->needUpdate();
                     //====================================================================//
                     //  Mark for Update Object Id In DataBase
-                    $this->objectIdChanged  =   true;
+                    $this->objectIdChanged = true;
                 }
 
                 break;

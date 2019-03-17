@@ -42,13 +42,13 @@ abstract class AbstractMailChimpType extends AbstractType
             //==============================================================================
             // MailChimp Api Key Option Authentification
             ->add('ApiKey', TextType::class, array(
-                'label'                     => "var.apikey.label",
-                'help_block'                => "var.apikey.desc",
-                'required'                  => true,
-                'translation_domain'        => "MailChimpBundle",
+                'label' => "var.apikey.label",
+                'help_block' => "var.apikey.desc",
+                'required' => true,
+                'translation_domain' => "MailChimpBundle",
             ))
         ;
-        
+
         return $this;
     }
 
@@ -67,17 +67,17 @@ abstract class AbstractMailChimpType extends AbstractType
         if (empty($options["data"]["ApiListsIndex"])) {
             return $this;
         }
-        
+
         $builder
             //==============================================================================
             // MailChimp List Option Selector
             ->add('ApiList', ChoiceType::class, array(
-                'label'                     => "var.list.label",
-                'help_block'                => "var.list.desc",
-                'required'                  => true,
-                'translation_domain'        => "MailChimpBundle",
+                'label' => "var.list.label",
+                'help_block' => "var.list.desc",
+                'required' => true,
+                'translation_domain' => "MailChimpBundle",
                 'choice_translation_domain' => false,
-                'choices'                   => array_flip($options["data"]["ApiListsIndex"]),
+                'choices' => array_flip($options["data"]["ApiListsIndex"]),
             ))
         ;
 

@@ -47,16 +47,16 @@ class WebHooksController extends Controller
 
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
-        
+
         //====================================================================//
         // Read Request Parameters
         $type = $request->request->get('type');
         $data = $request->request->get('data');
-        
+
         //====================================================================//
         // Log MailChimp Request
         $logger->info(__CLASS__.'::'.__FUNCTION__.' WebHook Type '.$type.'.', (is_array($data) ? $data : array()));
-        
+
         //====================================================================//
         // Verify Impacted List is Node Selected List
         if ($connector->getParameter('ApiList') != $data["list_id"]) {
@@ -64,15 +64,15 @@ class WebHooksController extends Controller
 
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
-        
+
         //==============================================================================
         // Detect Change Parameters
         if (("unsubscribe" == $type) && ('delete' == $data["action"])) {
-            $action     =   SPL_A_DELETE;
-            $objectId   =   ThirdParty::hash($data["email"]);
+            $action = SPL_A_DELETE;
+            $objectId = ThirdParty::hash($data["email"]);
         } elseif (in_array($type, array("subscribe", "unsubscribe", "profile" ), true)) {
-            $action     =   SPL_A_UPDATE;
-            $objectId   =   ThirdParty::hash($data["email"]);
+            $action = SPL_A_UPDATE;
+            $objectId = ThirdParty::hash($data["email"]);
         } elseif (in_array($type, array("upemail"), true)) {
             //====================================================================//
             // Update Object Id as Changed by this Request (Email Modified)
@@ -81,19 +81,19 @@ class WebHooksController extends Controller
                 ThirdParty::hash($data["old_email"]),
                 ThirdParty::hash($data["new_email"])
             );
-            $action     =   SPL_A_UPDATE;
-            $objectId   =   ThirdParty::hash($data["new_email"]);
+            $action = SPL_A_UPDATE;
+            $objectId = ThirdParty::hash($data["new_email"]);
         } elseif (in_array($type, array("cleaned"), true)) {
-            $action     =   SPL_A_DELETE;
-            $objectId   =   ThirdParty::hash($data["email"]);
+            $action = SPL_A_DELETE;
+            $objectId = ThirdParty::hash($data["email"]);
         } else {
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
-        
+
         //==============================================================================
         // Commit Changes
         $connector->commit('ThirdParty', $objectId, $action, "MailChimp API", "Member Updated");
-        
+
         //==============================================================================
         // Send Response
         return new JsonResponse(array('success' => true, 'type' => $type));

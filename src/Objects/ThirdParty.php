@@ -17,7 +17,6 @@ namespace Splash\Connectors\MailChimp\Objects;
 
 use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Connectors\MailChimp\Services\MailChimpConnector;
-use Splash\Models\AbstractObject;
 use Splash\Models\Objects\IntelParserTrait;
 use Splash\Models\Objects\SimpleFieldsTrait;
 
@@ -33,29 +32,29 @@ class ThirdParty extends AbstractStandaloneObject
     use ThirdParty\CoreTrait;
     use ThirdParty\MergeTrait;
     use ThirdParty\MetaTrait;
-    
+
     /**
      *  Object Disable Flag. Override this flag to disable Object.
      */
-    protected static $DISABLED        =  false;
+    protected static $DISABLED = false;
     /**
      *  Object Name
      */
-    protected static $NAME            =  "Customer";
+    protected static $NAME = "Customer";
     /**
      *  Object Description
      */
-    protected static $DESCRIPTION     =  "MailChimp Suscriber";
+    protected static $DESCRIPTION = "MailChimp Suscriber";
     /**
      *  Object Icon (FontAwesome or Glyph ico tag)
      */
-    protected static $ICO     =  "fa fa-user";
-    
+    protected static $ICO = "fa fa-user";
+
     /**
      * @var MailChimpConnector
      */
     protected $connector;
-    
+
     /**
      * Class Constructor
      *
@@ -63,6 +62,6 @@ class ThirdParty extends AbstractStandaloneObject
      */
     public function __construct(MailChimpConnector $parentConnector)
     {
-        $this->connector  =   $parentConnector;
+        $this->connector = $parentConnector;
     }
 }

@@ -37,7 +37,7 @@ trait MergeTrait
             ->MicroData("http://schema.org/Person", "familyName")
             ->isListed()
             ->Association("FNAME", "LNAME");
-        
+
         //====================================================================//
         // Lastname
         $this->fieldsFactory()->create(SPL_T_VARCHAR)
@@ -54,8 +54,6 @@ trait MergeTrait
      *
      * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
-     *
-     * @return void
      */
     protected function getMergeFields($key, $fieldName)
     {
@@ -71,14 +69,12 @@ trait MergeTrait
         // Clear Key Flag
         unset($this->in[$key]);
     }
-    
+
     /**
      * Write Given Fields
      *
      * @param string $fieldName Field Identifier / Name
      * @param mixed  $fieldData Field Data
-     *
-     * @return void
      */
     protected function setMergeFields($fieldName, $fieldData)
     {

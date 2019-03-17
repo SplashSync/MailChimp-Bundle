@@ -88,7 +88,7 @@ trait CRUDTrait
         $sources->admin = true;
         $sources->api = false;
         $this->setSimple("status", $sources);
-               
+
         //====================================================================//
         // Create Object
         $this->object = API::post(
@@ -101,7 +101,7 @@ trait CRUDTrait
 
         return $this->object;
     }
-    
+
     /**
      * Update Request Object
      *
@@ -120,10 +120,10 @@ trait CRUDTrait
         //====================================================================//
         // Update Not Allowed
         Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " WebHook Update is diasbled.");
-        
+
         return $this->getObjectIdentifier();
     }
-    
+
     /**
      * Delete requested Object
      *
@@ -145,7 +145,7 @@ trait CRUDTrait
 
         return true;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -157,7 +157,7 @@ trait CRUDTrait
 
         return $this->object->id;
     }
-    
+
     /**
      * Get Object CRUD Uri
      *

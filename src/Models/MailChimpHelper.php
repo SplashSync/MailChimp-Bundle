@@ -32,12 +32,12 @@ class MailChimpHelper
      * @var string
      */
     private static $endPoint;
-    
+
     /**
      * @var string
      */
     private static $apiList;
-    
+
     /**
      * Validate Api Key
      *
@@ -62,10 +62,10 @@ class MailChimpHelper
         if (empty($privateKey) || empty($server) || !is_string($server)) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Get MailChimp Endpoint Url
      *
@@ -86,10 +86,10 @@ class MailChimpHelper
         if (empty($privateKey) || empty($server) || !is_string($server)) {
             return null;
         }
-        
+
         return "https://".$server.".api.mailchimp.com/3.0/";
     }
-    
+
     /**
      * Get Current MailChimp List
      *
@@ -99,7 +99,7 @@ class MailChimpHelper
     {
         return self::$apiList;
     }
-    
+
     /**
      * Congigure MailChimp REST API
      *
@@ -140,7 +140,7 @@ class MailChimpHelper
 
         return true;
     }
-    
+
     /**
      * Ping MailChimp API Url as Annonymous User
      *
@@ -168,7 +168,7 @@ class MailChimpHelper
 
         return false;
     }
-    
+
     /**
      * Ping MailChimp API Url with API Key (Logged User)
      *
@@ -193,12 +193,12 @@ class MailChimpHelper
         //====================================================================//
         // Catch Errors inResponse
         self::catchErrors($response);
-        
+
         //====================================================================//
         // Return Connect Result
         return (200 == $response->code);
     }
-    
+
     /**
      * MailChimp API GET Request
      *
@@ -230,12 +230,12 @@ class MailChimpHelper
 
             return null;
         }
-        
+
         //====================================================================//
         // Catch Errors inResponse
         return self::catchErrors($response) ? $response->body : null;
     }
-    
+
     /**
      * MailChimp API PUT Request
      *
@@ -266,7 +266,7 @@ class MailChimpHelper
         // Catch Errors inResponse
         return self::catchErrors($response) ? $response->body : null;
     }
-    
+
     /**
      * MailChimp API POST Request
      *
@@ -297,7 +297,7 @@ class MailChimpHelper
         // Catch Errors inResponse
         return self::catchErrors($response) ? $response->body : null;
     }
-    
+
     /**
      * MailChimp API DELETE Request
      *
@@ -325,7 +325,7 @@ class MailChimpHelper
         // Catch Errors in Response
         return self::catchErrors($response) ? true : false;
     }
-    
+
     /**
      * Analyze MailChimp Api Response & Push Errors to Splash Log
      *

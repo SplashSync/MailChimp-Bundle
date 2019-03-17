@@ -31,7 +31,7 @@ class MailChimpConnector extends AbstractConnector
 {
     use \Splash\Bundle\Models\Connectors\GenericObjectMapperTrait;
     use \Splash\Bundle\Models\Connectors\GenericWidgetMapperTrait;
-    
+
     /**
      * Objects Type Class Map
      *
@@ -85,10 +85,10 @@ class MailChimpConnector extends AbstractConnector
         if (!$this->fetchMailingLists()) {
             return false;
         }
-        
+
         return true;
     }
-        
+
     /**
      * {@inheritdoc}
      *
@@ -104,50 +104,50 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Get List Detailed Informations
-        $details  =   API::get('lists/'.$config["ApiList"]);
+        $details = API::get('lists/'.$config["ApiList"]);
         if (is_null($details)) {
             return $informations;
         }
         //====================================================================//
         // Server General Description
-        $informations->shortdesc        =   "MailChimp";
-        $informations->longdesc         =   "Splash Integration for Mailchimp's Api";
+        $informations->shortdesc = "MailChimp";
+        $informations->longdesc = "Splash Integration for Mailchimp's Api";
         //====================================================================//
         // Company Informations
-        $informations->company          =   $details->contact->company;
-        $informations->address          =   $details->contact->address1;
-        $informations->zip              =   $details->contact->zip;
-        $informations->town             =   $details->contact->city;
-        $informations->country          =   $details->contact->country;
-        $informations->www              =   "https://mailchimp.com";
+        $informations->company = $details->contact->company;
+        $informations->address = $details->contact->address1;
+        $informations->zip = $details->contact->zip;
+        $informations->town = $details->contact->city;
+        $informations->country = $details->contact->country;
+        $informations->www = "https://mailchimp.com";
         // @codingStandardsIgnoreStart
-        $informations->email            =   $details->campaign_defaults->from_email;
+        $informations->email = $details->campaign_defaults->from_email;
         // @codingStandardsIgnoreEnd
-        $informations->phone            =   $details->contact->phone;
+        $informations->phone = $details->contact->phone;
         //====================================================================//
         // Server Logo & Ico
-        $informations->icoraw           =   Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Icon.png");
-        $informations->logourl          =   "https://developer.mailchimp.com/documentation/mailchimp/img/touch-icon-192x192.png";
-        $informations->logoraw          =   Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Logo-Small.png");
+        $informations->icoraw = Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Icon.png");
+        $informations->logourl = "https://developer.mailchimp.com/documentation/mailchimp/img/touch-icon-192x192.png";
+        $informations->logoraw = Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Logo-Small.png");
         //====================================================================//
         // Server Informations
-        $informations->servertype       =   "MailChimp Api V3";
-        $informations->serverurl        =   API::getEndPoint($config["ApiKey"]);
+        $informations->servertype = "MailChimp Api V3";
+        $informations->serverurl = API::getEndPoint($config["ApiKey"]);
         //====================================================================//
         // Module Informations
-        $informations->moduleauthor     =   SPLASH_AUTHOR;
-        $informations->moduleversion    =   "master";
+        $informations->moduleauthor = SPLASH_AUTHOR;
+        $informations->moduleversion = "master";
 
         return $informations;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function selfTest() : bool
     {
         $config = $this->getConfiguration();
-        
+
         //====================================================================//
         // Verify Api Key is Set
         //====================================================================//
@@ -156,7 +156,7 @@ class MailChimpConnector extends AbstractConnector
 
             return false;
         }
-        
+
         //====================================================================//
         // Configure Rest API
         return API::configure(
@@ -164,15 +164,15 @@ class MailChimpConnector extends AbstractConnector
             isset($config["ApiList"]) ? $config["ApiList"] : null
         );
     }
-    
+
     //====================================================================//
     // Objects Interfaces
     //====================================================================//
-    
+
     //====================================================================//
     // Files Interfaces
     //====================================================================//
-    
+
     /**
      * {@inheritdoc}
      */
@@ -187,11 +187,11 @@ class MailChimpConnector extends AbstractConnector
 
         return false;
     }
-    
+
     //====================================================================//
     // Profile Interfaces
     //====================================================================//
-    
+
     /**
      * @abstract   Get Connector Profile Informations
      *
@@ -200,19 +200,19 @@ class MailChimpConnector extends AbstractConnector
     public function getProfile() : array
     {
         return array(
-            'enabled'   =>      true,                                   // is Connector Enabled
-            'beta'      =>      true,                                   // is this a Beta release
-            'type'      =>      self::TYPE_ACCOUNT,                     // Connector Type or Mode
-            'name'      =>      'mailchimp',                            // Connector code (lowercase, no space allowed)
-            'connector' =>      'splash.connectors.mailchimp',          // Connector Symfony Service
-            'title'     =>      'profile.card.title',                   // Public short name
-            'label'     =>      'profile.card.label',                   // Public long name
-            'domain'    =>      'MailChimpBundle',                      // Translation domain for names
-            'ico'       =>      '/bundles/mailchimp/img/MailChimp-Icon.png',        // Public Icon path
-            'www'       =>      'mailchimp.com',                        // Website Url
+            'enabled' => true,                                   // is Connector Enabled
+            'beta' => true,                                   // is this a Beta release
+            'type' => self::TYPE_ACCOUNT,                     // Connector Type or Mode
+            'name' => 'mailchimp',                            // Connector code (lowercase, no space allowed)
+            'connector' => 'splash.connectors.mailchimp',          // Connector Symfony Service
+            'title' => 'profile.card.title',                   // Public short name
+            'label' => 'profile.card.label',                   // Public long name
+            'domain' => 'MailChimpBundle',                      // Translation domain for names
+            'ico' => '/bundles/mailchimp/img/MailChimp-Icon.png',        // Public Icon path
+            'www' => 'mailchimp.com',                        // Website Url
         );
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -236,7 +236,7 @@ class MailChimpConnector extends AbstractConnector
     {
         return "@MailChimp/Profile/new.html.twig";
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -252,7 +252,7 @@ class MailChimpConnector extends AbstractConnector
     {
         return null;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -272,11 +272,11 @@ class MailChimpConnector extends AbstractConnector
             "webhooks" => "MailChimpBundle:Actions:webhooks",
         );
     }
-    
+
     //====================================================================//
     //  HIGH LEVEL WEBSERVICE CALLS
     //====================================================================//
-    
+
     /**
      * Check & Update MailChimp Api Account WebHooks.
      *
@@ -291,11 +291,11 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Generate WebHook Url
-        $webHookServer  =   filter_input(INPUT_SERVER, 'SERVER_NAME');
+        $webHookServer = filter_input(INPUT_SERVER, 'SERVER_NAME');
         //====================================================================//
         // When Running on a Local Server
         if (false !== strpos("localhost", $webHookServer)) {
-            $webHookServer  =   "www.splashsync.com";
+            $webHookServer = "www.splashsync.com";
         }
         //====================================================================//
         // Create Object Class
@@ -303,7 +303,7 @@ class MailChimpConnector extends AbstractConnector
         $webHookManager->configure("webhook", $this->getWebserviceId(), $this->getConfiguration());
         //====================================================================//
         // Get List Of WebHooks for this List
-        $webHooks       =   $webHookManager->objectsList();
+        $webHooks = $webHookManager->objectsList();
         if (isset($webHooks["meta"])) {
             unset($webHooks["meta"]);
         }
@@ -320,7 +320,7 @@ class MailChimpConnector extends AbstractConnector
         // Splash WebHooks was NOT Found
         return false;
     }
-    
+
     /**
      * Check & Update MailChimp Api Account WebHooks.
      *
@@ -337,8 +337,8 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Generate WebHook Url
-        $webHookServer  =   filter_input(INPUT_SERVER, 'SERVER_NAME');
-        $webHookUrl     =   $router->generate(
+        $webHookServer = filter_input(INPUT_SERVER, 'SERVER_NAME');
+        $webHookUrl = $router->generate(
             'splash_connector_action',
             array(
                 'connectorName' => $this->getProfile()["name"],
@@ -349,8 +349,8 @@ class MailChimpConnector extends AbstractConnector
         //====================================================================//
         // When Running on a Local Server
         if (false !== strpos("localhost", $webHookServer)) {
-            $webHookServer  =   "www.splashsync.com";
-            $webHookUrl     =   "https://www.splashsync.com/en/ws/mailchimp/123456";
+            $webHookServer = "www.splashsync.com";
+            $webHookUrl = "https://www.splashsync.com/en/ws/mailchimp/123456";
         }
         //====================================================================//
         // Create Object Class
@@ -358,18 +358,18 @@ class MailChimpConnector extends AbstractConnector
         $webHookManager->configure("webhook", $this->getWebserviceId(), $this->getConfiguration());
         //====================================================================//
         // Get List Of WebHooks for this List
-        $webHooks       =   $webHookManager->objectsList();
+        $webHooks = $webHookManager->objectsList();
         if (isset($webHooks["meta"])) {
             unset($webHooks["meta"]);
         }
         //====================================================================//
         // Filter & Clean List Of WebHooks
-        $foundWebHook   =    false;
+        $foundWebHook = false;
         foreach ($webHooks as $webHook) {
             //====================================================================//
             // This is Current Node WebHooks
-            if (trim($webHook['url']) ==  $webHookUrl) {
-                $foundWebHook   =   true;
+            if (trim($webHook['url']) == $webHookUrl) {
+                $foundWebHook = true;
 
                 continue;
             }
@@ -388,11 +388,11 @@ class MailChimpConnector extends AbstractConnector
         // Add Splash WebHooks
         return (false !== $webHookManager->create($webHookUrl));
     }
-    
+
     //====================================================================//
     //  LOW LEVEL PRIVATE FUNCTIONS
     //====================================================================//
-    
+
     /**
      * Get MailChimp User Lists
      *
@@ -402,7 +402,7 @@ class MailChimpConnector extends AbstractConnector
     {
         //====================================================================//
         // Get User Lists from Api
-        $response  =   API::get('lists');
+        $response = API::get('lists');
         if (is_null($response)) {
             return false;
         }
@@ -415,7 +415,7 @@ class MailChimpConnector extends AbstractConnector
         foreach ($response->lists as $listDetails) {
             //====================================================================//
             // Add List Index
-            $listIndex[$listDetails->id]  =   $listDetails->name;
+            $listIndex[$listDetails->id] = $listDetails->name;
         }
         //====================================================================//
         // Store in Connector Settings
@@ -424,7 +424,7 @@ class MailChimpConnector extends AbstractConnector
         //====================================================================//
         // Update Connector Settings
         $this->updateConfiguration();
-        
+
         return true;
     }
 }
