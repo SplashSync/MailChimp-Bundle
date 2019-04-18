@@ -67,10 +67,10 @@ class WebHooksController extends Controller
 
         //==============================================================================
         // Detect Change Parameters
-        if (("unsubscribe" == $type) && isset($data["action"]) && ('delete' == $data["action"])) {
+        if ($this->isDeleteEvent($type, $data)) {
             $action = SPL_A_DELETE;
             $objectId = ThirdParty::hash($data["email"]);
-        } elseif (in_array($type, array("subscribe", "unsubscribe", "profile" ), true)) {
+        } elseif ($this->isUpdateEvent($type)) {
             $action = SPL_A_UPDATE;
             $objectId = ThirdParty::hash($data["email"]);
         } elseif (in_array($type, array("upemail"), true)) {
@@ -83,9 +83,6 @@ class WebHooksController extends Controller
             );
             $action = SPL_A_UPDATE;
             $objectId = ThirdParty::hash($data["new_email"]);
-        } elseif (in_array($type, array("cleaned"), true)) {
-            $action = SPL_A_DELETE;
-            $objectId = ThirdParty::hash($data["email"]);
         } else {
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
@@ -97,5 +94,41 @@ class WebHooksController extends Controller
         //==============================================================================
         // Send Response
         return new JsonResponse(array('success' => true, 'type' => $type));
+    }
+
+    /**
+     * Check if Event is Update Event
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    private function isUpdateEvent(string $type) : bool
+    {
+        if (in_array($type, array("subscribe", "unsubscribe", "profile" ), true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if Event is Delete Event
+     *
+     * @param string $type
+     * @param array  $data
+     *
+     * @return bool
+     */
+    private function isDeleteEvent(string $type, array $data) : bool
+    {
+        if (("unsubscribe" == $type) && isset($data["action"]) && ('delete' == $data["action"])) {
+            return true;
+        }
+        if (in_array($type, array("cleaned"), true)) {
+            return true;
+        }
+
+        return false;
     }
 }
