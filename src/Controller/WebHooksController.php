@@ -67,7 +67,7 @@ class WebHooksController extends Controller
 
         //==============================================================================
         // Detect Change Parameters
-        if (("unsubscribe" == $type) && ('delete' == $data["action"])) {
+        if (("unsubscribe" == $type) && isset($data["action"]) && ('delete' == $data["action"])) {
             $action = SPL_A_DELETE;
             $objectId = ThirdParty::hash($data["email"]);
         } elseif (in_array($type, array("subscribe", "unsubscribe", "profile" ), true)) {
