@@ -148,11 +148,19 @@ trait CRUDTrait
         // Stack Trace
         Splash::log()->trace();
         //====================================================================//
+        // Prevent Repeated Delete (PhpUnit)
+        if ($this->isLocked("MEMBER_".$objectId)) {
+            return true;
+        }
+        //====================================================================//
         // Delete Object
         $response = API::delete(self::getBaseUri()."/".$objectId);
         if (null === $response) {
             return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (".$objectId.").");
         }
+        //====================================================================//
+        // Prevent Repeated Delete (PhpUnit)
+        $this->lock("MEMBER_".$objectId);
 
         return true;
     }
