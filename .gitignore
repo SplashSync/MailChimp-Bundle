@@ -13,3 +13,5 @@
 /nbproject/private/
 /nbproject/
 /src/.php_cs.cache
+/.gh-pages/
+/docs/yarn.lock
