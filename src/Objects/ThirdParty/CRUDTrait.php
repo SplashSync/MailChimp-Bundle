@@ -53,9 +53,14 @@ trait CRUDTrait
         // Execute Read Request
         $mcObject = API::get(self::getBaseUri().$objectId);
         //====================================================================//
-        // Fatch Object
+        // Fetch Object
         if (null == $mcObject) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to load Member (".$objectId.").");
+            return Splash::log()->errTrace("Unable to load Member (".$objectId.").");
+        }
+        //====================================================================//
+        // Check Object Status
+        if ("archived" == $mcObject->status) {
+            return Splash::log()->errTrace("Member is Archived, you can't read it! (".$objectId.").");
         }
 
         return $mcObject;
@@ -148,19 +153,11 @@ trait CRUDTrait
         // Stack Trace
         Splash::log()->trace();
         //====================================================================//
-        // Prevent Repeated Delete (PhpUnit)
-        if ($this->isLocked("MEMBER_".$objectId)) {
-            return true;
-        }
-        //====================================================================//
         // Delete Object
         $response = API::delete(self::getBaseUri()."/".$objectId);
         if (null === $response) {
             return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (".$objectId.").");
         }
-        //====================================================================//
-        // Prevent Repeated Delete (PhpUnit)
-        $this->lock("MEMBER_".$objectId);
 
         return true;
     }
