@@ -15,3 +15,5 @@
 /src/.php_cs.cache
 /.gh-pages/
 /docs/yarn.lock
+/docs/assets/vendor/tiny-emitter/yarn.lock
+/docs/assets/vendor/ekko-lightbox/yarn.lock
