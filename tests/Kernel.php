@@ -97,8 +97,10 @@ class Kernel extends BaseKernel
      * Register Requiered Bundles
      *
      * @param LoaderInterface $loader
+     *
+     * @return void
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load($this->getRootDir().'/config/config.yml');
     }

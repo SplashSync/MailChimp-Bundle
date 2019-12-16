@@ -31,7 +31,7 @@ class S01WebHookTest extends TestCase
     /**
      * Test WebHook For Ping
      */
-    public function testWebhookPing()
+    public function testWebhookPing(): void
     {
         //====================================================================//
         // Load Connector
@@ -50,7 +50,7 @@ class S01WebHookTest extends TestCase
     /**
      * Test WebHook with Errors
      */
-    public function testWebhookErrors()
+    public function testWebhookErrors(): void
     {
         //====================================================================//
         // Load Connector
@@ -121,7 +121,7 @@ class S01WebHookTest extends TestCase
      * @param string $action
      * @param string $objectId
      */
-    public function testWebhookRequest(string $type, array $data, string $objectType, string $action, string $objectId)
+    public function testWebhookRequest(string $type, array $data, string $objectType, string $action, string $objectId): void
     {
         //====================================================================//
         // Load Connector
@@ -156,7 +156,7 @@ class S01WebHookTest extends TestCase
      *
      * @return array
      */
-    public function webHooksInputsProvider()
+    public function webHooksInputsProvider(): array
     {
         return array(
             //====================================================================//
