@@ -27,8 +27,10 @@ class NewFormType extends AbstractMailChimpType
      *
      * @param FormBuilderInterface $builder
      * @param array                $options
+     *
+     * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this
             ->addApiKeyField($builder, $options)

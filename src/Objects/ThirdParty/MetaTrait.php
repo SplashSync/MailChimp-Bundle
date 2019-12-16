@@ -16,7 +16,6 @@
 namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
 
 use DateTime;
-use Splash\Core\SplashCore      as Splash;
 
 /**
  * MailChimp ThirdParty Meta Fields
@@ -25,8 +24,10 @@ trait MetaTrait
 {
     /**
      * Build Fields using FieldFactory
+     *
+     * @return void
      */
-    protected function buildMetaFields()
+    protected function buildMetaFields(): void
     {
         //====================================================================//
         // TRACEABILITY INFORMATIONS
@@ -56,8 +57,10 @@ trait MetaTrait
      *
      * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
+     *
+     * @return void
      */
-    protected function getMetaFields($key, $fieldName)
+    protected function getMetaFields($key, $fieldName): void
     {
         //====================================================================//
         // Does the Field Exists?

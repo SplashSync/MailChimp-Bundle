@@ -342,7 +342,7 @@ class MailChimpHelper
         }
         //====================================================================//
         //  Debug Informations
-        if (true == SPLASH_DEBUG) {
+        if (Splash::isDebugMode()) {
             Splash::log()->www("[MailChimp] Full Response", $response);
         }
         if (!$response->hasBody()) {

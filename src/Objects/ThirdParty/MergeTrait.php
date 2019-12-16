@@ -15,7 +15,6 @@
 
 namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
 
-use Splash\Core\SplashCore      as Splash;
 use stdClass;
 
 /**
@@ -25,8 +24,10 @@ trait MergeTrait
 {
     /**
      * Build Core Fields using FieldFactory
+     *
+     * @return void
      */
-    protected function buildMergeFields()
+    protected function buildMergeFields(): void
     {
         //====================================================================//
         // Firstname
@@ -54,8 +55,10 @@ trait MergeTrait
      *
      * @param string $key       Input List Key
      * @param string $fieldName Field Identifier / Name
+     *
+     * @return void
      */
-    protected function getMergeFields($key, $fieldName)
+    protected function getMergeFields($key, $fieldName): void
     {
         //====================================================================//
         // Does the Field Exists?
@@ -75,8 +78,10 @@ trait MergeTrait
      *
      * @param string $fieldName Field Identifier / Name
      * @param mixed  $fieldData Field Data
+     *
+     * @return void
      */
-    protected function setMergeFields($fieldName, $fieldData)
+    protected function setMergeFields($fieldName, $fieldData): void
     {
         //====================================================================//
         // Does the Field Exists?
