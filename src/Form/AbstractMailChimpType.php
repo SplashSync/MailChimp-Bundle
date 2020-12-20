@@ -36,14 +36,14 @@ abstract class AbstractMailChimpType extends AbstractType
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addApiKeyField(FormBuilderInterface $builder, array $options)
+    public function addApiKeyField(FormBuilderInterface $builder, array $options): self
     {
         $builder
             //==============================================================================
             // MailChimp Api Key Option Authentification
             ->add('ApiKey', TextType::class, array(
                 'label' => "var.apikey.label",
-                // 'help_block' => "var.apikey.desc",
+                 'help' => "var.apikey.desc",
                 'required' => true,
                 'translation_domain' => "MailChimpBundle",
             ))
@@ -60,7 +60,7 @@ abstract class AbstractMailChimpType extends AbstractType
      *
      * @return $this
      */
-    public function addApiListField(FormBuilderInterface $builder, array $options)
+    public function addApiListField(FormBuilderInterface $builder, array $options): self
     {
         //==============================================================================
         // Check MailChimp Lists are Available
@@ -73,7 +73,7 @@ abstract class AbstractMailChimpType extends AbstractType
             // MailChimp List Option Selector
             ->add('ApiList', ChoiceType::class, array(
                 'label' => "var.list.label",
-                // 'help_block' => "var.list.desc",
+                'help' => "var.list.desc",
                 'required' => true,
                 'translation_domain' => "MailChimpBundle",
                 'choice_translation_domain' => false,
