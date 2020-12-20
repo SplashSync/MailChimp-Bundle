@@ -21,6 +21,7 @@
 
 # Title of the Bundle / Module
 title: MailChimp Connector
+repository: SplashSync/MailChimp-Bundle
 # Subtitle of the Site (Generaly DOC)
 subtitle: DOC
 # the subpath of your site, e.g. /blog
