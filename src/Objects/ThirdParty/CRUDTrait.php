@@ -123,7 +123,7 @@ trait CRUDTrait
         );
 
         if (is_null($response) || ($response->id != self::hash($this->object->email_address))) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update Member (".$this->object->email_address.").");
+            return Splash::log()->errTrace(" Unable to Update Member (".$this->object->email_address.").");
         }
         //====================================================================//
         // Update Object Id if Changed by this Request (Email Modified)
@@ -143,11 +143,11 @@ trait CRUDTrait
     /**
      * Delete requested Object
      *
-     * @param int $objectId Object Id
+     * @param string $objectId Object Id
      *
      * @return bool
      */
-    public function delete($objectId = null)
+    public function delete($objectId = null): bool
     {
         //====================================================================//
         // Stack Trace
@@ -156,7 +156,7 @@ trait CRUDTrait
         // Delete Object
         $response = API::delete(self::getBaseUri()."/".$objectId);
         if (null === $response) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (".$objectId.").");
+            return Splash::log()->errTrace(" Unable to Delete Member (".$objectId.").");
         }
 
         return true;

@@ -40,9 +40,9 @@ trait CRUDTrait
         // Execute Read Request
         $mcWebHook = API::get(self::getUri($objectId));
         //====================================================================//
-        // Fatch Object
+        // Fetch Object
         if (null == $mcWebHook) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to load WebHook (".$objectId.").");
+            return Splash::log()->errTrace(" Unable to load WebHook (".$objectId.").");
         }
 
         return $mcWebHook;
@@ -51,7 +51,7 @@ trait CRUDTrait
     /**
      * Create Request Object
      *
-     * @param string $url
+     * @param null|string $url
      *
      * @return false|stdClass New Object
      */
@@ -96,7 +96,7 @@ trait CRUDTrait
             $this->object
         );
         if (is_null($this->object) || empty($this->object->id)) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Update WebHook");
+            return Splash::log()->errTrace(" Unable to Update WebHook");
         }
 
         return $this->object;
@@ -119,7 +119,7 @@ trait CRUDTrait
         }
         //====================================================================//
         // Update Not Allowed
-        Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " WebHook Update is diasbled.");
+        Splash::log()->errTrace(" WebHook Update is disabled.");
 
         return $this->getObjectIdentifier();
     }
@@ -131,7 +131,7 @@ trait CRUDTrait
      *
      * @return bool
      */
-    public function delete($objectId = null)
+    public function delete($objectId = null): bool
     {
         //====================================================================//
         // Stack Trace
@@ -140,7 +140,7 @@ trait CRUDTrait
         // Delete Object
         $response = API::delete(self::getUri($objectId));
         if (null === $response) {
-            return Splash::log()->err("ErrLocalTpl", __CLASS__, __FUNCTION__, " Unable to Delete Member (".$objectId.").");
+            return Splash::log()->errTrace(" Unable to Delete Member (".$objectId.").");
         }
 
         return true;
@@ -161,7 +161,7 @@ trait CRUDTrait
     /**
      * Get Object CRUD Uri
      *
-     * @param string $objectId
+     * @param null|string $objectId
      *
      * @return string
      */

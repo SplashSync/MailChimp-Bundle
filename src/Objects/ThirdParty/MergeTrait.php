@@ -93,7 +93,8 @@ trait MergeTrait
             if (!isset($this->object->merge_fields)) {
                 $this->object->merge_fields = new stdClass();
             }
-            if (!isset($this->object->merge_fields->{$fieldName}) || ($this->object->merge_fields->{$fieldName} !== $fieldData)) {
+            if (!isset($this->object->merge_fields->{$fieldName})
+                || ($this->object->merge_fields->{$fieldName} !== $fieldData)) {
                 $this->object->merge_fields->{$fieldName} = $fieldData;
                 $this->needUpdate();
             }

@@ -121,8 +121,13 @@ class S01WebHookTest extends TestCase
      * @param string $action
      * @param string $objectId
      */
-    public function testWebhookRequest(string $type, array $data, string $objectType, string $action, string $objectId): void
-    {
+    public function testWebhookRequest(
+        string $type,
+        array $data,
+        string $objectType,
+        string $action,
+        string $objectId
+    ): void {
         //====================================================================//
         // Load Connector
         $connector = $this->getConnector("mailchimp");

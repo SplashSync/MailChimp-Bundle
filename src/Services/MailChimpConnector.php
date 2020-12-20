@@ -17,6 +17,8 @@ namespace Splash\Connectors\MailChimp\Services;
 
 use ArrayObject;
 use Splash\Bundle\Models\AbstractConnector;
+use Splash\Bundle\Models\Connectors\GenericObjectMapperTrait;
+use Splash\Bundle\Models\Connectors\GenericWidgetMapperTrait;
 use Splash\Connectors\MailChimp\Form\EditFormType;
 use Splash\Connectors\MailChimp\Form\NewFormType;
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
@@ -29,8 +31,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class MailChimpConnector extends AbstractConnector
 {
-    use \Splash\Bundle\Models\Connectors\GenericObjectMapperTrait;
-    use \Splash\Bundle\Models\Connectors\GenericWidgetMapperTrait;
+    use GenericObjectMapperTrait;
+    use GenericWidgetMapperTrait;
 
     /**
      * Objects Type Class Map
@@ -56,7 +58,7 @@ class MailChimpConnector extends AbstractConnector
     public function ping() : bool
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -71,7 +73,7 @@ class MailChimpConnector extends AbstractConnector
     public function connect() : bool
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self test Pass
         if (!$this->selfTest()) {
             return false;
         }
@@ -98,7 +100,7 @@ class MailChimpConnector extends AbstractConnector
     {
         $config = $this->getConfiguration();
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self test Pass
         if (!$this->selfTest() || empty($config["ApiList"])) {
             return $informations;
         }
@@ -111,7 +113,7 @@ class MailChimpConnector extends AbstractConnector
         //====================================================================//
         // Server General Description
         $informations->shortdesc = "MailChimp";
-        $informations->longdesc = "Splash Integration for Mailchimp's Api";
+        $informations->longdesc = "Splash Integration for Mailchimp Api";
         //====================================================================//
         // Company Informations
         $informations->company = $details->contact->company;
@@ -126,9 +128,13 @@ class MailChimpConnector extends AbstractConnector
         $informations->phone = $details->contact->phone;
         //====================================================================//
         // Server Logo & Ico
-        $informations->icoraw = Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Icon.png");
+        $informations->icoraw = Splash::file()->readFileContents(
+            dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Icon.png"
+        );
         $informations->logourl = "https://developer.mailchimp.com/documentation/mailchimp/img/touch-icon-192x192.png";
-        $informations->logoraw = Splash::file()->readFileContents(dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Logo-Small.png");
+        $informations->logoraw = Splash::file()->readFileContents(
+            dirname(dirname(__FILE__))."/Resources/public/img/MailChimp-Logo-Small.png"
+        );
         //====================================================================//
         // Server Informations
         $informations->servertype = "MailChimp Api V3";
@@ -183,7 +189,7 @@ class MailChimpConnector extends AbstractConnector
         if (!$this->selfTest()) {
             return false;
         }
-        Splash::log()->err("There are No Files Reading for Mailchime Up To Now!");
+        Splash::log()->err("There are No Files Reading for Mailchimp Up To Now!");
 
         return false;
     }

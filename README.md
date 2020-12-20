@@ -8,7 +8,7 @@ To try it, use [Splash Toolkit](https://github.com/SplashSync/Toolkit)
 
 ## Documentation
 
-For the configuration guide and reference, see: [MailChimp Connector Documentation](https://splashsync.github.io/MailChimp-Bundle/)
+For the configuration guide and reference, see: [MailChimp Connector Documentation](https://splashsync.gitlab.io/MailChimp-Bundle/)
 
 ## Contributing
 

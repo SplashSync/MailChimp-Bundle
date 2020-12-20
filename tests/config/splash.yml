@@ -8,10 +8,8 @@ splash:
             id:                 ThisIsMailChimpWsId
             key:                ThisIsNotASecretKeyForMailChimp
             name:               Serveur 1 (MailChimp)
-            host:               "%splash_host%/ws/soap"
-            server_host:        "%splash_host%"
             connector:          mailchimp
-            config:  
+            config:
                 WsHost:         http://localhost:8000
                 ApiKey:         ThisIsSecretApiKey
                 ApiList:        ThisIsSecretApiList

@@ -1,0 +1,61 @@
+################################################################################
+#
+#  This file is part of SplashSync Project.
+# 
+#  Copyright (C) Splash Sync <www.splashsync.com>
+# 
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# 
+#  For the full copyright and license information, please view the LICENSE
+#  file that was distributed with this source code.
+# 
+#  @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+################################################################################
+# Docker Compose File
+#
+# This Docker File intend to Create a Complete Dev Environment
+# for Splash SendInBlue Connector
+#
+# For a faster access to you container, you can add this IP to /etc/hosts
+# 
+# 172.110.0.100       toolkit.mailchimp.local
+#
+################################################################################
+
+
+version: '2'
+
+services:
+    
+    ################################################################################
+    # Splash Toolkit Container   
+    toolkit:
+        image: 'splashsync/toolkit'
+        container_name: mailchimp-toolkit
+        volumes:
+            # Specify Local Configuration File
+            - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
+            # Uncomment to use Local Sources instead of Release
+            - './src/:/app/vendor/splash/mailchimp/src/:ro'
+        hostname:           toolkit.mailchimp.local
+        networks:
+            sendinblue:     { ipv4_address: 172.110.0.100, aliases: [ toolkit.mailchimp.local ] }
+            splashsync:     { aliases: [ toolkit.mailchimp.local ] }
+            
+networks:
+    ################################################################################
+    # Default Private Network    
+    sendinblue:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.110.0.0/24
+    ################################################################################
+    # External Splash Network
+    splashsync:
+        external: true

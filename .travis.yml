@@ -64,7 +64,7 @@ script:
     - curl http://localhost:8000/ws/splash
 
 ################################################################################
-# Plateform config
+# Platform config
 language: php
 os: linux
 dist: trusty
