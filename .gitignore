@@ -18,3 +18,4 @@
 /docs/assets/vendor/tiny-emitter/yarn.lock
 /docs/assets/vendor/ekko-lightbox/yarn.lock
 /.idea/
+/.php-cs-fixer.cache
