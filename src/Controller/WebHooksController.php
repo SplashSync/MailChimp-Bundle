@@ -18,7 +18,7 @@ namespace Splash\Connectors\MailChimp\Controller;
 use Psr\Log\LoggerInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
