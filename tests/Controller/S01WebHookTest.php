@@ -27,6 +27,7 @@ class S01WebHookTest extends TestCase
     const PING_RESPONSE = '{"success":true,"ping":"pong"}';
     const MEMBER = "ThirdParty";
     const FAKE_EMAIL = "fake@exemple.com";
+    const METHOD = "JSON";
 
     /**
      * Test WebHook For Ping
@@ -43,8 +44,8 @@ class S01WebHookTest extends TestCase
         $this->assertPublicActionWorks($connector);
         $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
 
-        $this->assertPublicActionWorks($connector, null, array(), "POST");
-        $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
+        $this->assertPublicActionFail($connector, null, array(), "POST");
+        $this->assertPublicActionFail($connector, null, array(), self::METHOD);
     }
 
     /**
@@ -87,9 +88,11 @@ class S01WebHookTest extends TestCase
         );
 
         //====================================================================//
-        // Touch Url
-        $this->assertPublicActionWorks($connector, null, $data2, "POST");
-        $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
+        // POST MODE
+        $this->assertPublicActionFail($connector, null, $data2, "POST");
+        //====================================================================//
+        // JSON MODE
+        $this->assertPublicActionFail($connector, null, $data2, self::METHOD);
 
         //====================================================================//
         // GOOD LIST ID BUT WRONG TYPE
@@ -105,8 +108,12 @@ class S01WebHookTest extends TestCase
         );
 
         //====================================================================//
-        // Touch Url
+        // POST MODE
         $this->assertPublicActionWorks($connector, null, $data3, "POST");
+        $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
+        //====================================================================//
+        // JSON MODE
+        $this->assertPublicActionWorks($connector, null, $data3, self::METHOD);
         $this->assertEquals(self::PING_RESPONSE, $this->getResponseContents());
     }
 
@@ -144,20 +151,25 @@ class S01WebHookTest extends TestCase
         );
 
         //====================================================================//
-        // Touch Url
+        // POST MODE
         $this->assertPublicActionWorks($connector, null, $post, "POST");
         $this->assertEquals(
             json_encode(array("success" => true, "type" => $type)),
             $this->getResponseContents()
         );
-
+        $this->assertIsLastCommitted($action, $objectType, $objectId);
         //====================================================================//
-        // Verify Response
+        // JSON MODE
+        $this->assertPublicActionWorks($connector, null, $post, self::METHOD);
+        $this->assertEquals(
+            json_encode(array("success" => true, "type" => $type)),
+            $this->getResponseContents()
+        );
         $this->assertIsLastCommitted($action, $objectType, $objectId);
     }
 
     /**
-     * Generate Fake Inputs fro WebHook Requets
+     * Generate Fake Inputs from WebHook Request
      *
      * @return array
      */

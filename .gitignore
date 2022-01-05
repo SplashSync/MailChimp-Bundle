@@ -19,3 +19,4 @@
 /docs/assets/vendor/ekko-lightbox/yarn.lock
 /.idea/
 /.php-cs-fixer.cache
+/.phpunit.result.cache

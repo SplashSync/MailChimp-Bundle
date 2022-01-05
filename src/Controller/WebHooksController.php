@@ -21,6 +21,7 @@ use Splash\Connectors\MailChimp\Objects\ThirdParty;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Splash MailChimp WebHooks Actions Controller
@@ -38,7 +39,7 @@ class WebHooksController extends Controller
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function indexAction(LoggerInterface $logger, Request $request, AbstractConnector $connector)
+    public function indexAction(LoggerInterface $logger, Request $request, AbstractConnector $connector): JsonResponse
     {
         //====================================================================//
         // For Mailchimp Ping GET
@@ -50,12 +51,12 @@ class WebHooksController extends Controller
 
         //====================================================================//
         // Read Request Parameters
-        $type = $request->request->get('type');
-        $data = $request->request->get('data');
+        $type = $this->extractType($request);
+        $data = $this->extractData($request);
 
         //====================================================================//
         // Log MailChimp Request
-        $logger->info(__CLASS__.'::'.__FUNCTION__.' WebHook Type '.$type.'.', (is_array($data) ? $data : array()));
+        $logger->info(__CLASS__.'::'.__FUNCTION__.' WebHook Type '.$type.'.', $data);
 
         //====================================================================//
         // Verify Impacted List is Node Selected List
@@ -94,6 +95,70 @@ class WebHooksController extends Controller
         //==============================================================================
         // Send Response
         return new JsonResponse(array('success' => true, 'type' => $type));
+    }
+
+    /**
+     * Extract Type from Request
+     *
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return string
+     */
+    private function extractType(Request $request): string
+    {
+        //==============================================================================
+        // Safety Check => Data are here
+        if (!$request->isMethod('POST')) {
+            throw new BadRequestHttpException('Malformed or missing data');
+        }
+        //==============================================================================
+        // Decode Received Type
+        $requestType = empty($request->request->get('type'))
+            ? json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING)['type']
+            : $request->request->get('type')
+        ;
+        //==============================================================================
+        // Safety Check => Type are here
+        if (empty($requestType) || !is_scalar($requestType)) {
+            throw new BadRequestHttpException('Malformed or missing data');
+        }
+        //==============================================================================
+        // Return Request Type
+        return (string) $requestType;
+    }
+
+    /**
+     * Extract Data from Request
+     *
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return array
+     */
+    private function extractData(Request $request): array
+    {
+        //==============================================================================
+        // Safety Check => Data are here
+        if (!$request->isMethod('POST')) {
+            throw new BadRequestHttpException('Malformed or missing data');
+        }
+        //==============================================================================
+        // Decode Received Data
+        $requestData = empty($request->request->get('data'))
+            ? json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING)['data']
+            : $request->request->get('data')
+        ;
+        //==============================================================================
+        // Safety Check => Data are here
+        if (empty($requestData) || !is_array($requestData)) {
+            throw new BadRequestHttpException('Malformed or missing data');
+        }
+        //==============================================================================
+        // Return Request Data
+        return $requestData;
     }
 
     /**
