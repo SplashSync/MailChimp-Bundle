@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,7 @@ namespace Splash\Connectors\MailChimp\Controller;
 use Psr\Log\LoggerInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * Splash MailChimp WebHooks Actions Controller
  */
-class WebHooksController extends Controller
+class WebHooksController extends AbstractController
 {
     /**
      * Execute WebHook Actions for A MailChimp Connector
@@ -116,6 +116,7 @@ class WebHooksController extends Controller
         //==============================================================================
         // Decode Received Type
         $requestType = empty($request->request->get('type'))
+            /** @phpstan-ignore-next-line  */
             ? json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING)['type']
             : $request->request->get('type')
         ;
@@ -148,6 +149,7 @@ class WebHooksController extends Controller
         //==============================================================================
         // Decode Received Data
         $requestData = empty($request->request->get('data'))
+            /** @phpstan-ignore-next-line  */
             ? json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING)['data']
             : $request->request->get('data')
         ;

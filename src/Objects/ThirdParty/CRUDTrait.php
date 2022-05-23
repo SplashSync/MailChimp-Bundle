@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,11 +27,11 @@ trait CRUDTrait
     /**
      * Get MailChimp Subscriber Hash
      *
-     * @param mixed $email
+     * @param string $email
      *
      * @return string $result
      */
-    public static function hash($email) : string
+    public static function hash(string $email) : string
     {
         return md5(strtolower($email));
     }
@@ -39,11 +39,11 @@ trait CRUDTrait
     /**
      * Load Request Object
      *
-     * @param string $objectId Object id
+     * @param string $objectId Object ID
      *
-     * @return mixed
+     * @return null|stdClass
      */
-    public function load($objectId)
+    public function load(string$objectId): ?stdClass
     {
         //====================================================================//
         // Stack Trace
@@ -55,12 +55,12 @@ trait CRUDTrait
         //====================================================================//
         // Fetch Object
         if (null == $mcObject) {
-            return Splash::log()->errTrace("Unable to load Member (".$objectId.").");
+            return Splash::log()->errNull("Unable to load Member (".$objectId.").");
         }
         //====================================================================//
         // Check Object Status
         if ("archived" == $mcObject->status) {
-            return Splash::log()->errTrace("Member is Archived, you can't read it! (".$objectId.").");
+            return Splash::log()->errNull("Member is Archived, you can't read it! (".$objectId.").");
         }
 
         return $mcObject;
@@ -69,9 +69,9 @@ trait CRUDTrait
     /**
      * Create Request Object
      *
-     * @return false|stdClass New Object
+     * @return null|stdClass New Object
      */
-    public function create()
+    public function create(): ?stdClass
     {
         //====================================================================//
         // Stack Trace
@@ -79,7 +79,9 @@ trait CRUDTrait
         //====================================================================//
         // Check Customer Name is given
         if (empty($this->in["email_address"])) {
-            return Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, "email_address");
+            Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, "email_address");
+
+            return null;
         }
         //====================================================================//
         // Init Object
@@ -99,9 +101,9 @@ trait CRUDTrait
      *
      * @param bool $needed Is This Update Needed
      *
-     * @return false|string Object Id of False if Failed to Update
+     * @return null|string Object ID of False if Failed to Update
      */
-    public function update(bool $needed)
+    public function update(bool $needed): ?string
     {
         //====================================================================//
         // Stack Trace
@@ -123,11 +125,11 @@ trait CRUDTrait
         );
 
         if (is_null($response) || ($response->id != self::hash($this->object->email_address))) {
-            return Splash::log()->errTrace(" Unable to Update Member (".$this->object->email_address.").");
+            return Splash::log()->errNull(" Unable to Update Member (".$this->object->email_address.").");
         }
         //====================================================================//
         // Update Object Id if Changed by this Request (Email Modified)
-        if (isset($this->objectIdChanged) && $this->objectIdChanged) {
+        if ($this->objectIdChanged) {
             $this->connector->objectIdChanged(
                 "ThirdParty",
                 $this->object->id,
@@ -141,13 +143,9 @@ trait CRUDTrait
     }
 
     /**
-     * Delete requested Object
-     *
-     * @param string $objectId Object Id
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function delete($objectId = null): bool
+    public function delete(string $objectId): bool
     {
         //====================================================================//
         // Stack Trace
@@ -165,19 +163,15 @@ trait CRUDTrait
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentifier()
+    public function getObjectIdentifier(): ?string
     {
-        if (!isset($this->object->id)) {
-            return false;
-        }
-
-        return $this->object->id;
+        return $this->object->id ?? null;
     }
 
     /**
      * Get Object CRUD Base Uri
      *
-     * @param string $email
+     * @param null|string $email
      *
      * @return string
      */

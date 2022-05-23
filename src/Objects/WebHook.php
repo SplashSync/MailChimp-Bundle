@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,27 +34,27 @@ class WebHook extends AbstractStandaloneObject
     /**
      * {@inheritdoc}
      */
-    protected static $DISABLED = true;
+    protected static bool $disabled = true;
 
     /**
      * {@inheritdoc}
      */
-    protected static $NAME = "WebHook";
+    protected static string $name = "WebHook";
 
     /**
      * {@inheritdoc}
      */
-    protected static $DESCRIPTION = "MailChimp WebHook";
+    protected static string $description = "MailChimp WebHook";
 
     /**
      * {@inheritdoc}
      */
-    protected static $ICO = "fa fa-cogs";
+    protected static string $ico = "fa fa-cogs";
 
     /**
      * @var MailChimpConnector
      */
-    protected $connector;
+    protected MailChimpConnector $connector;
 
     /**
      * Class Constructor

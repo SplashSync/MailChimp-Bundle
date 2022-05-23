@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -37,18 +37,18 @@ class MailChimpConnector extends AbstractConnector
     /**
      * Objects Type Class Map
      *
-     * @var array
+     * @var array<string, class-string>
      */
-    protected static $objectsMap = array(
+    protected static array $objectsMap = array(
         "ThirdParty" => "Splash\\Connectors\\MailChimp\\Objects\\ThirdParty",
     );
 
     /**
      * Widgets Type Class Map
      *
-     * @var array
+     * @var array<string, class-string>
      */
-    protected static $widgetsMap = array(
+    protected static array $widgetsMap = array(
         "SelfTest" => "Splash\\Connectors\\MailChimp\\Widgets\\SelfTest",
     );
 
@@ -167,7 +167,7 @@ class MailChimpConnector extends AbstractConnector
         // Configure Rest API
         return API::configure(
             $config["ApiKey"],
-            isset($config["ApiList"]) ? $config["ApiList"] : null
+            $config["ApiList"] ?? null
         );
     }
 
@@ -182,16 +182,16 @@ class MailChimpConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getFile(string $filePath, string $fileMd5)
+    public function getFile(string $filePath, string $fileMd5): ?array
     {
         //====================================================================//
-        // Safety Check => Verify Selftest Pass
+        // Safety Check => Verify Self-tests Pass
         if (!$this->selfTest()) {
-            return false;
+            return null;
         }
         Splash::log()->err("There are No Files Reading for Mailchimp Up To Now!");
 
-        return false;
+        return null;
     }
 
     //====================================================================//
@@ -199,7 +199,7 @@ class MailChimpConnector extends AbstractConnector
     //====================================================================//
 
     /**
-     * @abstract   Get Connector Profile Informations
+     * Get Connector Profile Information
      *
      * @return array
      */
@@ -254,7 +254,7 @@ class MailChimpConnector extends AbstractConnector
     /**
      * {@inheritdoc}
      */
-    public function getMasterAction()
+    public function getMasterAction(): ?string
     {
         return null;
     }
@@ -297,6 +297,7 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Generate WebHook Url
+        /** @var string $webHookServer */
         $webHookServer = filter_input(INPUT_SERVER, 'SERVER_NAME');
         //====================================================================//
         // When Running on a Local Server
@@ -343,6 +344,7 @@ class MailChimpConnector extends AbstractConnector
         }
         //====================================================================//
         // Generate WebHook Url
+        /** @var string $webHookServer */
         $webHookServer = filter_input(INPUT_SERVER, 'SERVER_NAME');
         $webHookUrl = $router->generate(
             'splash_connector_action',

@@ -3,7 +3,7 @@
 /*
  *  This file is part of SplashSync Project.
  *
- *  Copyright (C) 2015-2021 Splash Sync  <www.splashsync.com>
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,9 +19,10 @@ use Splash\Bundle\Models\AbstractStandaloneObject;
 use Splash\Connectors\MailChimp\Services\MailChimpConnector;
 use Splash\Models\Objects\IntelParserTrait;
 use Splash\Models\Objects\SimpleFieldsTrait;
+use stdClass;
 
 /**
- * MailChimp Implementation of ThirParty
+ * MailChimp Implementation of ThirdParty
  */
 class ThirdParty extends AbstractStandaloneObject
 {
@@ -36,27 +37,32 @@ class ThirdParty extends AbstractStandaloneObject
     /**
      * {@inheritdoc}
      */
-    protected static $DISABLED = false;
+    protected static bool $disabled = false;
 
     /**
      * {@inheritdoc}
      */
-    protected static $NAME = "Customer";
+    protected static string $name = "Customer";
 
     /**
      * {@inheritdoc}
      */
-    protected static $DESCRIPTION = "MailChimp Suscriber";
+    protected static string $description = "MailChimp Subscriber";
 
     /**
      * {@inheritdoc}
      */
-    protected static $ICO = "fa fa-user";
+    protected static string $ico = "fa fa-user";
+
+    /**
+     * @phpstan-var stdClass
+     */
+    protected object $object;
 
     /**
      * @var MailChimpConnector
      */
-    protected $connector;
+    protected MailChimpConnector $connector;
 
     /**
      * Class Constructor
