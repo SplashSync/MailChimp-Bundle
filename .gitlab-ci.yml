@@ -19,45 +19,29 @@ include:
   - local: 'ci/defaults-php.yaml'
   - local: 'ci/pages.yaml'
 
-################################################################
-# Defined Pipeline Stages
-stages:
-  - quality
-  - functional
-  - deploy
+
 
 ################################################################
 # Quality Tests
 ################################################################
 
-quality:php-8.2-ex:
-  extends: .quality
-  when: always
-
 quality:php-8.2:
-  when: always
+    extends: .quality
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
 quality:php-8.1:
-  when: always
+    extends: .quality
+    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
 
-quality:php-8.0:
-  when: manual
-
-quality:php-7.4:
-  when: manual
 
 ################################################################
 # Functional Tests
 ################################################################
 
 functional:php-8.2:
-    when: always
+  extends: .functional
+  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
 functional:php-8.1:
-    when: always
-
-functional:php-8.0:
-    when: manual
-
-functional:php-7.4:
-    when: manual
+  extends: .functional
+  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
