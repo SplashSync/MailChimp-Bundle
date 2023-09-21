@@ -15,11 +15,11 @@
 #
 ################################################################################
 
+################################################################
+# Include Pipeline Templates
 include:
-  - local: 'ci/defaults-php.yaml'
-  - local: 'ci/pages.yaml'
-
-
+  - remote: 'https://github.com/BadPixxel/Php-Sdk/blob/main/gitlab/php/defaults.yaml'
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
 
 ################################################################
 # Quality Tests
