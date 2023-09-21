@@ -24,7 +24,7 @@
 ################################################################
 pages:
     image:      jekyll/minimal:latest
-    stage:      deploy
+    stage:      Deploy
     tags:       [ Dedicated ]
     ################################################################################
     # Run Test Script

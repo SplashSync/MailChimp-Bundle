@@ -30,9 +30,9 @@ variables:
 ################################################################
 # Defined Pipeline Stages
 stages:
-  - quality
-  - functional
-  - deploy
+  - Quality
+  - Functional
+  - Deploy
 
 ################################################################
 # Default Job
@@ -56,7 +56,7 @@ stages:
 
 .quality:    &quality
     <<: *base
-    stage:      quality
+    stage:      Quality
     ################################################################################
     # Run Test Script
     script:
@@ -64,29 +64,13 @@ stages:
       - wall-e grumphp:quality
       - wall-e grumphp:stan
 
-#quality:php-8.2:
-#    <<: *quality
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-#
-#quality:php-8.1:
-#    <<: *quality
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-#
-#quality:php-8.0:
-#    <<: *quality
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-#
-#quality:php-7.4:
-#    <<: *quality
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
-
 ################################################################
 # Functional Tests
 ################################################################
 
 .functional:    &functional
     <<: *base
-    stage:      functional
+    stage:      Functional
     ################################################################################
     # Run Test Script
     script:
@@ -102,19 +86,3 @@ stages:
         when: always
         reports:
             junit: "$CI_PROJECT_DIR/*-report.xml"
-
-#functional:php-8.2:
-#  <<: *functional
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-#
-#functional:php-8.1:
-#  <<: *functional
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-#
-#functional:php-8.0:
-#  <<: *functional
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-#
-#functional:php-7.4:
-#  <<: *functional
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-7.4
