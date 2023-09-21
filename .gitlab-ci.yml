@@ -25,6 +25,14 @@ include:
 # Quality Tests
 ################################################################
 
+.quality:
+  extends:  .quality
+  ################################################################################
+  # Run Test Script
+  script:
+    # Execute Phpunit Test Suite
+    - print "THIS IS A CUSTOM SCRIPT"
+
 quality:php-8.2:
     extends: .quality
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
