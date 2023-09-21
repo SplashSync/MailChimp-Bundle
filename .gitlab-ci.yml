@@ -30,6 +30,10 @@ stages:
 # Quality Tests
 ################################################################
 
+quality:php-8.2-ex:
+  extends: .quality
+  when: always
+
 quality:php-8.2:
   when: always
 
