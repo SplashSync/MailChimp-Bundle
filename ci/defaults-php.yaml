@@ -82,19 +82,3 @@ variables:
         when: always
         reports:
             junit: "$CI_PROJECT_DIR/*-report.xml"
-
-
-#################################################################
-## Build Documentation
-#################################################################
-#pages:
-#    image:      jekyll/minimal:latest
-#    stage:      deploy
-#    tags:       [ Dedicated ]
-#    ################################################################################
-#    # Run Test Script
-#    script:
-#        - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
-#    artifacts:
-#        paths:
-#            - public
