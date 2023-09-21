@@ -125,6 +125,7 @@ class WebHooksController extends AbstractController
         if (empty($requestType) || !is_scalar($requestType)) {
             throw new BadRequestHttpException('Malformed or missing data');
         }
+
         //==============================================================================
         // Return Request Type
         return (string) $requestType;
@@ -158,6 +159,7 @@ class WebHooksController extends AbstractController
         if (empty($requestData) || !is_array($requestData)) {
             throw new BadRequestHttpException('Malformed or missing data');
         }
+
         //==============================================================================
         // Return Request Data
         return $requestData;

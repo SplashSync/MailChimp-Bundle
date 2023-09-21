@@ -15,22 +15,23 @@
 #
 ################################################################################
 
-include:
-  - local: 'ci/defaults-php.yaml'
-
 ################################################################
-# Defined Pipeline Stages
-stages:
-  - quality
-  - functional
-  - tests
-  - deploy
-
-################################################################
-# Base Job
+# DEFAULT CI/CD PIPELINES CONFIGURATION
+#
+# FOR PHP PROJECTS
 ################################################################
 
-.base:    &base
+################################################################
+# Set any variables we need
+variables:
+  COMPOSER_MEMORY_LIMIT:        -1
+  SYMFONY_DEPRECATIONS_HELPER:  disabled
+
+################################################################
+# Default Job
+################################################################
+
+default:
     tags:
         - Dedicated
     before_script:
@@ -42,61 +43,41 @@ stages:
         # Run After Script
         - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
 
+################################################################
+# Quality Tests
+################################################################
+
+.quality:    &quality
+    stage:      quality
+    ################################################################################
+    # Run Test Script
+    script:
+      # Execute Grumphp Testsuite
+      - wall-e grumphp:quality
+      - wall-e grumphp:stan
 
 ################################################################
 # Functional Tests
 ################################################################
 
-.core_tests:    &core_tests
-    stage:      tests
-    tags:
-        - Dedicated
-    services:
-        - mysql:5.7
-    artifacts:
-            when: always
-            reports:
-                junit: "$CI_PROJECT_DIR/*-report.xml"
-    ################################################################################
-    # Install & Configure Environment
-    before_script:
-        # Setup SendInBlue Connector
-        - sed -i -e 's/ThisIsSecretApiKey/'$MC_API_KEY'/g' tests/config/splash.yml >/dev/null 2>&1
-        - sed -i -e 's/ThisIsSecretApiList/'$MC_API_LIST'/g' tests/config/splash.yml >/dev/null 2>&1
-        # Setup Travis
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-        # Deploy Symfony Files
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
-        # Setup Symfony Version & Create Database
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
-        # Install Symfony
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
-
+.functional:    &functional
+    stage:      functional
     ################################################################################
     # Run Test Script
     script:
-        # Execute Grumphp Testsuite
-        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-        # Execute PhpUnit Tests
-        - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
-
+        # Execute Phpunit Test Suite
+        - php vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
     ################################################################################
     # Run After Script
     after_script:
-      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
+        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/toolkit/after.sh  | bash
+    ################################################################################
+    # Job Artefacts
+    artifacts:
+        when: always
+        reports:
+            junit: "$CI_PROJECT_DIR/*-report.xml"
 
-################################################################################
-# PHP 8.1
-tests:php-8.1:
-  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-  needs: ["tests:php-8.0"]
-  <<: *core_tests
-
-################################################################################
-# PHP 8.0
-tests:php-8.0:
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-    <<: *core_tests
 
 ################################################################
 # Build Documentation
@@ -112,4 +93,3 @@ pages:
     artifacts:
         paths:
             - public
-

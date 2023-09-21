@@ -52,6 +52,7 @@ class MailChimpHelper
         if (empty($apiKey) || !is_string($apiKey)) {
             return false;
         }
+
         //====================================================================//
         // Verify Api Key is on Right Format
         try {
@@ -134,7 +135,7 @@ class MailChimpHelper
             ->sendsJson()
             ->expectsJson()
             ->timeout(3)
-            ;
+        ;
         // Set it as a template
         Request::ini($template);
 
@@ -153,6 +154,7 @@ class MailChimpHelper
         if (empty(self::$endPoint)) {
             return false;
         }
+
         //====================================================================//
         // Perform Ping Test
         try {
@@ -181,6 +183,7 @@ class MailChimpHelper
         if (empty(self::$endPoint)) {
             return false;
         }
+
         //====================================================================//
         // Perform Connect Test
         try {
@@ -220,6 +223,7 @@ class MailChimpHelper
         if (!empty($body)) {
             $uri .= "?".http_build_query($body);
         }
+
         //====================================================================//
         // Perform Request
         try {
@@ -251,6 +255,7 @@ class MailChimpHelper
         if (empty(self::$endPoint)) {
             return null;
         }
+
         //====================================================================//
         // Perform Request
         try {
@@ -262,6 +267,7 @@ class MailChimpHelper
 
             return null;
         }
+
         //====================================================================//
         // Catch Errors inResponse
         return self::catchErrors($response) ? $response->body : null;
@@ -282,6 +288,7 @@ class MailChimpHelper
         if (empty(self::$endPoint)) {
             return null;
         }
+
         //====================================================================//
         // Perform Request
         try {
@@ -293,6 +300,7 @@ class MailChimpHelper
 
             return null;
         }
+
         //====================================================================//
         // Catch Errors inResponse
         return self::catchErrors($response) ? $response->body : null;
@@ -312,6 +320,7 @@ class MailChimpHelper
         if (empty(self::$endPoint)) {
             return null;
         }
+
         //====================================================================//
         // Perform Request
         try {
@@ -321,6 +330,7 @@ class MailChimpHelper
 
             return null;
         }
+
         //====================================================================//
         // Catch Errors in Response
         return self::catchErrors($response) ? true : false;

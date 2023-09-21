@@ -62,6 +62,7 @@ class MailChimpConnector extends AbstractConnector
         if (!$this->selfTest()) {
             return false;
         }
+
         //====================================================================//
         // Perform Ping Test
         return API::ping();
@@ -206,16 +207,16 @@ class MailChimpConnector extends AbstractConnector
     public function getProfile() : array
     {
         return array(
-            'enabled' => true,                                   // is Connector Enabled
-            'beta' => true,                                   // is this a Beta release
-            'type' => self::TYPE_ACCOUNT,                     // Connector Type or Mode
-            'name' => 'mailchimp',                            // Connector code (lowercase, no space allowed)
-            'connector' => 'splash.connectors.mailchimp',          // Connector Symfony Service
-            'title' => 'profile.card.title',                   // Public short name
-            'label' => 'profile.card.label',                   // Public long name
-            'domain' => 'MailChimpBundle',                      // Translation domain for names
-            'ico' => '/bundles/mailchimp/img/MailChimp-Icon.png',        // Public Icon path
-            'www' => 'mailchimp.com',                        // Website Url
+            'enabled' => true,                                      // is Connector Enabled
+            'beta' => false,                                        // is this a Beta release
+            'type' => self::TYPE_ACCOUNT,                           // Connector Type or Mode
+            'name' => 'mailchimp',                                  // Connector code (lowercase, no space allowed)
+            'connector' => 'splash.connectors.mailchimp',           // Connector Symfony Service
+            'title' => 'profile.card.title',                        // Public short name
+            'label' => 'profile.card.label',                        // Public long name
+            'domain' => 'MailChimpBundle',                          // Translation domain for names
+            'ico' => '/bundles/mailchimp/img/MailChimp-Icon.png',   // Public Icon path
+            'www' => 'mailchimp.com',                               // Website Url
         );
     }
 
@@ -323,6 +324,7 @@ class MailChimpConnector extends AbstractConnector
                 return true;
             }
         }
+
         //====================================================================//
         // Splash WebHooks was NOT Found
         return false;
@@ -392,6 +394,7 @@ class MailChimpConnector extends AbstractConnector
         if ($foundWebHook) {
             return true;
         }
+
         //====================================================================//
         // Add Splash WebHooks
         return (false !== $webHookManager->create($webHookUrl));

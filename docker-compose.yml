@@ -39,13 +39,22 @@ services:
         container_name: mailchimp-toolkit
         volumes:
             # Specify Local Configuration File
-            - './docker/toolkit/splash.yml:/app/config/packages/splash.yml:ro'
+            - './config/packages/splash.yaml:/app/config/packages/splash.yaml:ro'
             # Uncomment to use Local Sources instead of Release
             - './src/:/app/vendor/splash/mailchimp/src/:ro'
         hostname:           toolkit.mailchimp.local
         networks:
             sendinblue:     { ipv4_address: 172.110.0.100, aliases: [ toolkit.mailchimp.local ] }
             splashsync:     { aliases: [ toolkit.mailchimp.local ] }
+
+    ################################################################################
+    # PHP 8.2
+    php-8.2:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+        container_name: mailchimp-php-8.2
+        volumes:
+            - ./:/var/www/html
+            - vendor-php82:/var/www/html/vendor
 
     ################################################################################
     # PHP 8.1
@@ -55,15 +64,6 @@ services:
         volumes:
             - ./:/var/www/html
             - vendor-php81:/var/www/html/vendor
-
-    ################################################################################
-    # PHP 8.0
-    php-8.0:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-        container_name: mailchimp-php-8.0
-        volumes:
-            - ./:/var/www/html
-            - vendor-php80:/var/www/html/vendor
 
 networks:
     ################################################################################
@@ -79,5 +79,5 @@ networks:
         external: true
 
 volumes:
+    vendor-php82: ~
     vendor-php81: ~
-    vendor-php80: ~

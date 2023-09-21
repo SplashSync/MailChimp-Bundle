@@ -1,0 +1,23 @@
+parameters:
+    # Adds a fallback configuration if the env var is not set.
+    env(MC_API_KEY): 'ThisIsSecretApiKey'
+    env(MC_API_LIST): 'ThisIsSecretApiList'
+
+splash:
+
+    ################################################################################
+    # List of Available Connector Connections
+    ################################################################################
+    connections:
+        
+        ########################################################################
+        # MailChimp Default
+        mailchimp:
+            id:                 ThisIsMailChimpWsId
+            key:                ThisIsNotASecretKeyForMailChimp
+            name:               Serveur 1 (MailChimp)
+            connector:          mailchimp
+            config:
+                WsHost:         http://localhost:8000
+                ApiKey:         "%env(resolve:MC_API_KEY)%"
+                ApiList:        "%env(resolve:MC_API_LIST)%"
