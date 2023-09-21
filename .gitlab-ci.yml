@@ -17,13 +17,13 @@
 
 include:
   - local: 'ci/defaults-php.yaml'
+  - local: 'ci/pages.yaml'
 
 ################################################################
 # Defined Pipeline Stages
 stages:
   - quality
   - functional
-  - tests
   - deploy
 
 ################################################################
@@ -31,97 +31,29 @@ stages:
 ################################################################
 
 quality:php-8.2:
-    <<: *quality
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
+  when: always
 
 quality:php-8.1:
-    <<: *quality
-    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
+  when: always
 
-#################################################################
-## Base Job
-#################################################################
-#
-#.base:    &base
-#    tags:
-#        - Dedicated
-#    before_script:
-#        ################################################################################
-#        # Install Symfony
-#        - composer update
-#    after_script:
-#        ################################################################################
-#        # Run After Script
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
-#
-#
-#################################################################
-## Functional Tests
-#################################################################
-#
-#.core_tests:    &core_tests
-#    stage:      tests
-#    tags:
-#        - Dedicated
-#    services:
-#        - mysql:5.7
-#    artifacts:
-#            when: always
-#            reports:
-#                junit: "$CI_PROJECT_DIR/*-report.xml"
-#    ################################################################################
-#    # Install & Configure Environment
-#    before_script:
-#        # Setup SendInBlue Connector
-#        - sed -i -e 's/ThisIsSecretApiKey/'$MC_API_KEY'/g' tests/config/splash.yml >/dev/null 2>&1
-#        - sed -i -e 's/ThisIsSecretApiList/'$MC_API_LIST'/g' tests/config/splash.yml >/dev/null 2>&1
-#        # Setup Travis
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/configure.sh  | sh
-#        # Deploy Symfony Files
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/deploy.sh | sh
-#        # Setup Symfony Version & Create Database
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/configure.sh | sh
-#        # Install Symfony
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/symfony/install.sh | sh
-#
-#    ################################################################################
-#    # Run Test Script
-#    script:
-#        # Execute Grumphp Testsuite
-#        - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/grumphp.sh  | sh
-#        # Execute PhpUnit Tests
-#        - vendor/bin/phpunit --log-junit $CI_PROJECT_DIR/full-report.xml
-#
-#    ################################################################################
-#    # Run After Script
-#    after_script:
-#      - curl -s https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/ci/after.sh | sh
-#
-#################################################################################
-## PHP 8.1
-#tests:php-8.1:
-#  image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.1
-#  needs: ["tests:php-8.0"]
-#  <<: *core_tests
-#
-#################################################################################
-## PHP 8.0
-#tests:php-8.0:
-#    image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.0
-#    <<: *core_tests
-#
-#################################################################
-## Build Documentation
-#################################################################
-#pages:
-#    image:      jekyll/minimal:latest
-#    stage:      deploy
-#    tags:       [ Dedicated ]
-#    ################################################################################
-#    # Run Test Script
-#    script:
-#        - wget -qO - https://gitlab.com/badpixxel-robo/jekyll/-/raw/main/scripts/gitlab-pages.sh | sh
-#    artifacts:
-#        paths:
-#            - public
+quality:php-8.0:
+  when: never
 
+quality:php-7.4:
+  when: never
+
+################################################################
+# Functional Tests
+################################################################
+
+functional:php-8.2:
+    when: always
+
+functional:php-8.1:
+    when: always
+
+functional:php-8.0:
+    when: never
+
+functional:php-7.4:
+    when: never
