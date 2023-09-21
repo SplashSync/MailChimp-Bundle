@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Connectors\MailChimp\Controller;
+namespace Splash\Connectors\MailChimp\Actions;
 
 use Psr\Log\LoggerInterface;
 use Splash\Bundle\Models\AbstractConnector;
@@ -26,12 +26,15 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * Splash MailChimp WebHooks Actions Controller
  */
-class WebHooksController extends AbstractController
+class Master extends AbstractController
 {
+    public function __construct(private LoggerInterface $logger)
+    {
+    }
+
     /**
      * Execute WebHook Actions for A MailChimp Connector
      *
-     * @param LoggerInterface   $logger
      * @param Request           $request
      * @param AbstractConnector $connector
      *
@@ -39,12 +42,12 @@ class WebHooksController extends AbstractController
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function indexAction(LoggerInterface $logger, Request $request, AbstractConnector $connector): JsonResponse
+    public function __invoke(Request $request, AbstractConnector $connector): JsonResponse
     {
         //====================================================================//
         // For Mailchimp Ping GET
         if ($request->isMethod('GET')) {
-            $logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Ping.', $request->attributes->all());
+            $this->logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Ping.', $request->attributes->all());
 
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }
@@ -56,12 +59,12 @@ class WebHooksController extends AbstractController
 
         //====================================================================//
         // Log MailChimp Request
-        $logger->info(__CLASS__.'::'.__FUNCTION__.' WebHook Type '.$type.'.', $data);
+        $this->logger->info(__CLASS__.'::'.__FUNCTION__.' WebHook Type '.$type.'.', $data);
 
         //====================================================================//
         // Verify Impacted List is Node Selected List
         if ($connector->getParameter('ApiList') != $data["list_id"]) {
-            $logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Wrong List.', $request->attributes->all());
+            $this->logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Wrong List.', $request->attributes->all());
 
             return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
         }

@@ -19,6 +19,7 @@ use ArrayObject;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\Connectors\GenericObjectMapperTrait;
 use Splash\Bundle\Models\Connectors\GenericWidgetMapperTrait;
+use Splash\Connectors\MailChimp\Actions;
 use Splash\Connectors\MailChimp\Form\EditFormType;
 use Splash\Connectors\MailChimp\Form\NewFormType;
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
@@ -266,7 +267,7 @@ class MailChimpConnector extends AbstractConnector
     public function getPublicActions() : array
     {
         return array(
-            "index" => "MailChimpBundle:WebHooks:index",
+            "index" => Actions\Master::class,
         );
     }
 
@@ -276,7 +277,7 @@ class MailChimpConnector extends AbstractConnector
     public function getSecuredActions() : array
     {
         return array(
-            "webhooks" => "MailChimpBundle:Actions:webhooks",
+            "webhooks" => Actions\WebhooksUpdate::class,
         );
     }
 

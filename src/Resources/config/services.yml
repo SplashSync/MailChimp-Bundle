@@ -1,4 +1,8 @@
 services:
+    _defaults:
+        autowire:           true
+        autoconfigure:      true
+
     ################################################################################
     # SPLASH MailChimp Connector Service
     splash.connectors.mailchimp:
@@ -8,8 +12,8 @@ services:
             - { name: "splash.connector"}
 
     ################################################################################
-    # Enables Dependency Injection in Controller Actions
-    Splash\Connectors\MailChimp\Controller\:
-        resource: '../../Controller'
+    # Enables Dependency Injection in Actions
+    Splash\Connectors\MailChimp\Actions\:
+        resource: '../../Actions'
         public: true
         tags: ['controller.service_arguments']

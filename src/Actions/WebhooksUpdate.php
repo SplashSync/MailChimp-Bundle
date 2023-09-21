@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Connectors\MailChimp\Controller;
+namespace Splash\Connectors\MailChimp\Actions;
 
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\Local\ActionsTrait;
@@ -23,14 +23,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Splash MailChimp Connector Actions Controller
  */
-class ActionsController extends AbstractController
+class WebhooksUpdate extends AbstractController
 {
     use ActionsTrait;
+
+    public function __construct(
+        private TranslatorInterface $translator,
+        private RouterInterface $router
+    ) {
+    }
 
     /**
      * Update User Connector WebHooks List
@@ -40,25 +46,21 @@ class ActionsController extends AbstractController
      *
      * @return Response
      */
-    public function webhooksAction(Request $request, AbstractConnector $connector)
+    public function __invoke(Request $request, AbstractConnector $connector): Response
     {
         $result = false;
         //====================================================================//
         // Connector SelfTest
         if (($connector instanceof MailChimpConnector) && $connector->selfTest()) {
-            /** @var RouterInterface $router */
-            $router = $this->get('router');
             //====================================================================//
             // Update WebHooks Config
-            $result = $connector->updateWebHooks($router);
+            $result = $connector->updateWebHooks($this->router);
         }
         //====================================================================//
         // Inform User
-        /** @var Translator $translator */
-        $translator = $this->get('translator');
         $this->addFlash(
             $result ? "success" : "danger",
-            $translator->trans(
+            $this->translator->trans(
                 $result ? "admin.webhooks.msg" : "admin.webhooks.err",
                 array(),
                 "MailChimpBundle"
