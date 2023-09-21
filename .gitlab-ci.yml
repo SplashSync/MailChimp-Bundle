@@ -25,7 +25,7 @@ include:
 # Quality Tests
 ################################################################
 
-.quality:
+.quality-local:
   extends:  .quality
   ################################################################################
   # Run Test Script
@@ -34,7 +34,7 @@ include:
     - print "THIS IS A CUSTOM SCRIPT"
 
 quality:php-8.2:
-    extends: .quality
+    extends: .quality-local
     image: registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
 
 quality:php-8.1:
