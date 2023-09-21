@@ -37,10 +37,10 @@ quality:php-8.1:
   when: always
 
 quality:php-8.0:
-  when: never
+  when: manual
 
 quality:php-7.4:
-  when: never
+  when: manual
 
 ################################################################
 # Functional Tests
@@ -53,7 +53,7 @@ functional:php-8.1:
     when: always
 
 functional:php-8.0:
-    when: never
+    when: manual
 
 functional:php-7.4:
-    when: never
+    when: manual
