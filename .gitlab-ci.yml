@@ -18,7 +18,7 @@
 ################################################################
 # Include Pipeline Templates
 include:
-  - remote: 'https://github.com/BadPixxel/Php-Sdk/blob/main/gitlab/php/defaults.yaml'
+  - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/php/defaults.yaml'
   - remote: 'https://raw.githubusercontent.com/BadPixxel/Php-Sdk/main/gitlab/pages.yaml'
 
 ################################################################
