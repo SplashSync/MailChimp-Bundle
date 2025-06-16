@@ -17,7 +17,7 @@ namespace Splash\Connectors\MailChimp\Widgets;
 
 use Splash\Bundle\Models\AbstractStandaloneWidget;
 use Splash\Connectors\MailChimp\Services\MailChimpConnector;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 
 /**
  * MailChimp Config SelfTest

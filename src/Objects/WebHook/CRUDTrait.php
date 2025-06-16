@@ -16,7 +16,7 @@
 namespace Splash\Connectors\MailChimp\Objects\WebHook;
 
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
-use Splash\Core\SplashCore      as Splash;
+use Splash\Core\SplashCore as Splash;
 use stdClass;
 
 /**

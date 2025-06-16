@@ -13,7 +13,7 @@
  *  file that was distributed with this source code.
  */
 
-namespace   Splash\Connectors\MailChimp\Objects\ThirdParty;
+namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
 
 use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
 
