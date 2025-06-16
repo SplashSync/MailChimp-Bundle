@@ -27,16 +27,13 @@
 #
 ################################################################################
 
-
-version: '2'
-
 services:
     
     ################################################################################
     # Splash Toolkit Container   
     toolkit:
-        image: 'splashsync/toolkit:alpine'
-        container_name: mailchimp-toolkit
+        image:              'splashsync/toolkit:2.5'
+        container_name:     mailchimp-toolkit
         volumes:
             # Specify Local Configuration File
             - './config/packages/splash.yaml:/app/config/packages/splash.yaml:ro'
@@ -48,13 +45,13 @@ services:
             splashsync:     { aliases: [ toolkit.mailchimp.local ] }
 
     ################################################################################
-    # PHP 8.2
-    php-8.2:
-        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.2
-        container_name: mailchimp-php-8.2
+    # PHP 8.3
+    php-8.3:
+        image:          registry.gitlab.com/badpixxel-projects/php-sdk:php-8.3
+        container_name: mailchimp-php-8.3
         volumes:
             - ./:/var/www/html
-            - vendor-php82:/var/www/html/vendor
+            - vendor-php83:/var/www/html/vendor
 
     ################################################################################
     # PHP 8.1
@@ -79,5 +76,5 @@ networks:
         external: true
 
 volumes:
-    vendor-php82: ~
+    vendor-php83: ~
     vendor-php81: ~
