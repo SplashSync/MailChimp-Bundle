@@ -16,19 +16,17 @@
 namespace Splash\Connectors\MailChimp\Widgets;
 
 use Splash\Bundle\Models\AbstractStandaloneWidget;
-use Splash\Connectors\MailChimp\Services\MailChimpConnector;
-use Splash\Core\SplashCore as Splash;
+use Splash\Connectors\MailChimp\Connectors\MailChimpConnector;
+use Splash\Core\Client\Splash;
 
 /**
  * MailChimp Config SelfTest
  */
 class SelfTest extends AbstractStandaloneWidget
 {
-    /**
-     * Define Standard Options for this Widget
-     *
-     * @var array
-     */
+    //====================================================================//
+    // Define Standard Options for this Widget
+    // Override this array to change default options for your widget
     public static array $options = array(
         "Width" => self::SIZE_DEFAULT,
         'UseCache' => true,
@@ -57,8 +55,6 @@ class SelfTest extends AbstractStandaloneWidget
 
     /**
      * Class Constructor
-     *
-     * @param MailChimpConnector $connector
      */
     public function __construct(MailChimpConnector $connector)
     {
@@ -68,7 +64,7 @@ class SelfTest extends AbstractStandaloneWidget
     /**
      * {@inheritdoc}
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings("UnusedFormalParameter")
      */
     public function get(array $parameters = array()): ?array
     {

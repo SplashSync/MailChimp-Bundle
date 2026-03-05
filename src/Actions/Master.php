@@ -18,6 +18,7 @@ namespace Splash\Connectors\MailChimp\Actions;
 use Psr\Log\LoggerInterface;
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
+use Splash\Core\Dictionary\SplOperations;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,9 +48,9 @@ class Master extends AbstractController
         //====================================================================//
         // For Mailchimp Ping GET
         if ($request->isMethod('GET')) {
-            $this->logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Ping.', $request->attributes->all());
+            $this->logger->notice(__CLASS__.'::'.__FUNCTION__.' MailChimp Ping.', $request->attributes->all());
 
-            return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
+            return new JsonResponse(array('success' => true, 'ping' => 'pong'));
         }
 
         //====================================================================//
@@ -66,16 +67,16 @@ class Master extends AbstractController
         if ($connector->getParameter('ApiList') != $data["list_id"]) {
             $this->logger->error(__CLASS__.'::'.__FUNCTION__.' MailChimp Wrong List.', $request->attributes->all());
 
-            return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
+            return new JsonResponse(array('success' => true, 'ping' => 'pong'));
         }
 
         //==============================================================================
         // Detect Change Parameters
         if ($this->isDeleteEvent($type, $data)) {
-            $action = SPL_A_DELETE;
+            $action = SplOperations::DELETE;
             $objectId = ThirdParty::hash($data["email"]);
         } elseif ($this->isUpdateEvent($type)) {
-            $action = SPL_A_UPDATE;
+            $action = SplOperations::UPDATE;
             $objectId = ThirdParty::hash($data["email"]);
         } elseif (in_array($type, array("upemail"), true)) {
             //====================================================================//
@@ -85,10 +86,10 @@ class Master extends AbstractController
                 ThirdParty::hash($data["old_email"]),
                 ThirdParty::hash($data["new_email"])
             );
-            $action = SPL_A_UPDATE;
+            $action = SplOperations::UPDATE;
             $objectId = ThirdParty::hash($data["new_email"]);
         } else {
-            return new JsonResponse(array( 'success' => true, 'ping' => 'pong' ));
+            return new JsonResponse(array('success' => true, 'ping' => 'pong'));
         }
 
         //==============================================================================
@@ -103,11 +104,7 @@ class Master extends AbstractController
     /**
      * Extract Type from Request
      *
-     * @param Request $request
-     *
      * @throws BadRequestHttpException
-     *
-     * @return string
      */
     private function extractType(Request $request): string
     {
@@ -136,8 +133,6 @@ class Master extends AbstractController
 
     /**
      * Extract Data from Request
-     *
-     * @param Request $request
      *
      * @throws BadRequestHttpException
      *
@@ -170,37 +165,23 @@ class Master extends AbstractController
 
     /**
      * Check if Event is Update Event
-     *
-     * @param string $type
-     *
-     * @return bool
      */
     private function isUpdateEvent(string $type) : bool
     {
-        if (in_array($type, array("subscribe", "unsubscribe", "profile" ), true)) {
-            return true;
-        }
-
-        return false;
+        return in_array($type, array("subscribe", "unsubscribe", "profile"), true);
     }
 
     /**
      * Check if Event is Delete Event
      *
-     * @param string $type
-     * @param array  $data
-     *
-     * @return bool
+     * @param array $data
      */
     private function isDeleteEvent(string $type, array $data) : bool
     {
         if (("unsubscribe" == $type) && isset($data["action"]) && ('delete' == $data["action"])) {
             return true;
         }
-        if (in_array($type, array("cleaned"), true)) {
-            return true;
-        }
 
-        return false;
+        return in_array($type, array("cleaned"), true);
     }
 }

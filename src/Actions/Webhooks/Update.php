@@ -13,38 +13,31 @@
  *  file that was distributed with this source code.
  */
 
-namespace Splash\Connectors\MailChimp\Actions;
+namespace Splash\Connectors\MailChimp\Actions\Webhooks;
 
 use Splash\Bundle\Models\AbstractConnector;
 use Splash\Bundle\Models\Local\ActionsTrait;
-use Splash\Connectors\MailChimp\Services\MailChimpConnector;
+use Splash\Connectors\MailChimp\Connectors\MailChimpConnector;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Splash MailChimp Connector Actions Controller
+ * Splash MailChimp Connector - Update WebHooks Action
  */
-class WebhooksUpdate extends AbstractController
+class Update extends AbstractController
 {
     use ActionsTrait;
 
     public function __construct(
-        private TranslatorInterface $translator,
-        private RouterInterface $router
+        private TranslatorInterface $translator
     ) {
     }
 
     /**
      * Update User Connector WebHooks List
-     *
-     * @param Request           $request
-     * @param AbstractConnector $connector
-     *
-     * @return Response
      */
     public function __invoke(Request $request, AbstractConnector $connector): Response
     {
@@ -54,7 +47,7 @@ class WebhooksUpdate extends AbstractController
         if (($connector instanceof MailChimpConnector) && $connector->selfTest()) {
             //====================================================================//
             // Update WebHooks Config
-            $result = $connector->updateWebHooks($this->router);
+            $result = $connector->updateWebHooks();
         }
         //====================================================================//
         // Inform User

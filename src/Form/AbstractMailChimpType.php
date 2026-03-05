@@ -15,10 +15,10 @@
 
 namespace Splash\Connectors\MailChimp\Form;
 
+use Splash\Connectors\MailChimp\Services\Managers\ListsManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-//use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -64,20 +64,20 @@ abstract class AbstractMailChimpType extends AbstractType
     {
         //==============================================================================
         // Check MailChimp Lists are Available
-        if (empty($options["data"]["ApiListsIndex"])) {
+        if (empty($options["data"][ListsManager::LISTS_INDEX])) {
             return $this;
         }
 
         $builder
             //==============================================================================
             // MailChimp List Option Selector
-            ->add('ApiList', ChoiceType::class, array(
+            ->add(ListsManager::DEFAULT_INDEX, ChoiceType::class, array(
                 'label' => "var.list.label",
                 'help' => "var.list.desc",
                 'required' => true,
                 'translation_domain' => "MailChimpBundle",
                 'choice_translation_domain' => false,
-                'choices' => array_flip($options["data"]["ApiListsIndex"]),
+                'choices' => array_flip($options["data"][ListsManager::LISTS_INDEX]),
             ))
         ;
 

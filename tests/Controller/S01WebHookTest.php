@@ -15,8 +15,9 @@
 
 namespace Splash\Connectors\MailChimp\Test\Controller;
 
+use Splash\Connectors\MailChimp\Connectors\MailChimpConnector;
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
-use Splash\Connectors\MailChimp\Services\MailChimpConnector;
+use Splash\Core\Dictionary\SplOperations;
 use Splash\Tests\Tools\TestCase;
 
 /**
@@ -173,7 +174,7 @@ class S01WebHookTest extends TestCase
      *
      * @return array
      */
-    public function webHooksInputsProvider(): array
+    public static function webHooksInputsProvider(): array
     {
         return array(
             //====================================================================//
@@ -182,7 +183,7 @@ class S01WebHookTest extends TestCase
                 "subscribe",
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
-                SPL_A_UPDATE,
+                SplOperations::UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
@@ -192,7 +193,7 @@ class S01WebHookTest extends TestCase
                 "profile",
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
-                SPL_A_UPDATE,
+                SplOperations::UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
@@ -205,7 +206,7 @@ class S01WebHookTest extends TestCase
                     "new_email" => self::FAKE_EMAIL,
                 ),
                 self::MEMBER,
-                SPL_A_UPDATE,
+                SplOperations::UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
@@ -215,7 +216,7 @@ class S01WebHookTest extends TestCase
                 "unsubscribe",
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
-                SPL_A_UPDATE,
+                SplOperations::UPDATE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
@@ -225,7 +226,7 @@ class S01WebHookTest extends TestCase
                 "unsubscribe",
                 array("email" => self::FAKE_EMAIL, "action" => "delete"),
                 self::MEMBER,
-                SPL_A_DELETE,
+                SplOperations::DELETE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
 
@@ -235,7 +236,7 @@ class S01WebHookTest extends TestCase
                 "cleaned",
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
-                SPL_A_DELETE,
+                SplOperations::DELETE,
                 ThirdParty::hash(self::FAKE_EMAIL),
             ),
         );

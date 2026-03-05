@@ -1,0 +1,80 @@
+<?php
+
+/*
+ *  This file is part of SplashSync Project.
+ *
+ *  Copyright (C) Splash Sync  <www.splashsync.com>
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
+namespace Splash\Connectors\MailChimp\Models\Api\Action;
+
+use Splash\OpenApi\ApiResponse;
+use Splash\OpenApi\Dictionary\ExtendedActionsTypes;
+use Splash\OpenApi\Interfaces\ConnexionInterface;
+use Splash\OpenApi\Interfaces\Visitor\VisitorInterface;
+use Splash\OpenApi\Models\Action\AbstractUpdateAction;
+use Splash\OpenApi\Models\Mutation;
+use Splash\OpenApi\Models\Visitor\AbstractRestVisitor;
+use Webmozart\Assert\Assert;
+
+/**
+ * Update Object on MailChimp API using PUT method.
+ *
+ * MailChimp uses PUT (not PATCH) for updates.
+ * MailChimp returns flat JSON (no Data[] wrapper).
+ */
+class PutAction extends AbstractUpdateAction
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function execute(VisitorInterface $visitor, string $objectId, object $object): ApiResponse
+    {
+        Assert::isInstanceOf($visitor, AbstractRestVisitor::class);
+        //====================================================================//
+        // Resolve Item Uri
+        $itemUri = $visitor->getRestAdapter()
+            ->getResourceNameResolver()
+            ->resolveItemUri($visitor->getModel(), $objectId)
+        ;
+        if (!$itemUri) {
+            return new ApiResponse($visitor);
+        }
+
+        //====================================================================//
+        // Execute PUT Request
+        $rawResponse = $visitor->getConnexion()->put(
+            $itemUri,
+            $this->extractData($visitor, $object)
+        );
+        if (null === $rawResponse) {
+            return new ApiResponse($visitor);
+        }
+
+        //====================================================================//
+        // Execute Post-Update Actions
+        $this->executeExtendedActions($visitor, ExtendedActionsTypes::POST_UPDATE);
+
+        return new ApiResponse($visitor, true, $rawResponse);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * Use PUT Method for Update
+     */
+    protected function executeUpdateMutation(ConnexionInterface $connexion, Mutation $mutation): bool
+    {
+        /** @var array<string, array|int|string> $data */
+        $data = $mutation->getInputData();
+
+        return null !== $connexion->put($mutation->getResourceName(), $data);
+    }
+}
