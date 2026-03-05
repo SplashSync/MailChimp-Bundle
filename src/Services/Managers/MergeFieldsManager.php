@@ -140,6 +140,9 @@ class MergeFieldsManager
         }
         //====================================================================//
         // Configure Field
+        if (MergeFieldsHelper::isWriteOnly($attr)) {
+            $factory->isWriteOnly();
+        }
         $factory->group("Attributes");
     }
 }
