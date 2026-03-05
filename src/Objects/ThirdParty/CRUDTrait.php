@@ -27,22 +27,16 @@ trait CRUDTrait
     /**
      * {@inheritDoc}
      */
-    public function getByPrimary(array $keys): ?string
+    public function load(string $objectId): ?object
     {
+        $member = $this->coreLoad($objectId);
         //====================================================================//
-        // Safety Check
-        $email = $keys['email_address'] ?? null;
-        if (!$email) {
+        // In CI/CD Mode, filter out archived members (MailChimp archive on delete)
+        if (Splash::isCiCdMode() && $member instanceof Member && "archived" === $member->status) {
             return null;
         }
-        //====================================================================//
-        // Try to Load Contact by MD5 Hash of Email
-        $member = $this->load(ThirdParty::hash((string) $email));
-        //====================================================================//
-        // Clean Splash Log
-        Splash::log()->cleanLog();
 
-        return $member instanceof Member ? $member->getId() : null;
+        return $member;
     }
 
     /**
@@ -110,5 +104,48 @@ trait CRUDTrait
         $objectId = $this->coreUpdate(true);
 
         return $objectId ?: null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function delete(?string $objectId = null): bool
+    {
+        //====================================================================//
+        // Execute Core Delete
+        if ($this->coreDelete($objectId)) {
+            return true;
+        }
+        //====================================================================//
+        // MailChimp returns 405 when member is already archived
+        $lastResponse = $this->visitor->getConnexion()->getLastResponse();
+        if ($lastResponse && 405 === $lastResponse->code) {
+            Splash::log()->cleanLog();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getByPrimary(array $keys): ?string
+    {
+        //====================================================================//
+        // Safety Check
+        $email = $keys['email_address'] ?? null;
+        if (!$email) {
+            return null;
+        }
+        //====================================================================//
+        // Try to Load Contact by MD5 Hash of Email
+        $member = $this->load(ThirdParty::hash((string) $email));
+        //====================================================================//
+        // Clean Splash Log
+        Splash::log()->cleanLog();
+
+        return $member instanceof Member ? $member->getId() : null;
     }
 }
