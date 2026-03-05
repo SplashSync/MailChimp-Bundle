@@ -32,7 +32,7 @@ class EditFormType extends AbstractMailChimpType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $this->addApiKeyField($builder, $options);
+        $this->addApiKeyField($builder);
         $this->addApiListField($builder, $options);
     }
 }

@@ -62,5 +62,4 @@ class ThirdParty extends AbstractRestAndMetadataObject implements PrimaryKeysAwa
     {
         return md5(strtolower($email));
     }
-
 }

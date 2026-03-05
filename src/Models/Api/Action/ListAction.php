@@ -92,6 +92,7 @@ class ListAction extends AbstractListAction
                 continue;
             }
             if (is_array($value)) {
+                /** @var array<int, array<string, mixed>> $value */
                 return $value;
             }
         }

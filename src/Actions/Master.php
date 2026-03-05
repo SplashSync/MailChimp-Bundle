@@ -41,8 +41,6 @@ class Master extends AbstractController
      * @param AbstractConnector $connector
      *
      * @return JsonResponse
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function __invoke(Request $request, AbstractConnector $connector): JsonResponse
     {

@@ -57,11 +57,6 @@ class WebHookManager
             //====================================================================//
             // This is the Expected WebHook
             if (trim((string) $webHook['url']) == $webHookUrl) {
-
-                dd(
-                    $webHook,
-                    $webHookUrl,
-                );
                 return true;
             }
         }

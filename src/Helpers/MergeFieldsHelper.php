@@ -43,6 +43,15 @@ class MergeFieldsHelper
     );
 
     /**
+     * MailChimp Merge Field Types that are Write-Only (lossy conversion)
+     *
+     * @var string[]
+     */
+    private static array $writeOnlyTypes = array(
+        "birthday",
+    );
+
+    /**
      * Get Splash Field Type from MailChimp Merge Field
      */
     public static function toSplashType(stdClass $mergeField): string
@@ -54,15 +63,6 @@ class MergeFieldsHelper
 
         return SplFields::VARCHAR;
     }
-
-    /**
-     * MailChimp Merge Field Types that are Write-Only (lossy conversion)
-     *
-     * @var string[]
-     */
-    private static array $writeOnlyTypes = array(
-        "birthday",
-    );
 
     /**
      * Check if this Merge Field Type is Write-Only

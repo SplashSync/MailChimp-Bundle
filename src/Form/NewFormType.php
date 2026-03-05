@@ -33,7 +33,7 @@ class NewFormType extends AbstractMailChimpType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this
-            ->addApiKeyField($builder, $options)
+            ->addApiKeyField($builder)
             ->addApiListField($builder, $options)
         ;
     }

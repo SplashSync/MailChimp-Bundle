@@ -28,15 +28,8 @@ abstract class AbstractMailChimpType extends AbstractType
 {
     /**
      * Add Api Key Field to FormBuilder
-     *
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function addApiKeyField(FormBuilderInterface $builder, array $options): self
+    public function addApiKeyField(FormBuilderInterface $builder): self
     {
         $builder
             //==============================================================================
@@ -53,12 +46,7 @@ abstract class AbstractMailChimpType extends AbstractType
     }
 
     /**
-     * @abstract    Add List Selector Field to FormBuilder
-     *
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     *
-     * @return $this
+     * Add List Selector Field to FormBuilder
      */
     public function addApiListField(FormBuilderInterface $builder, array $options): self
     {

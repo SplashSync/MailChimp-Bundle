@@ -181,12 +181,13 @@ class MailChimpConnector extends AbstractConnector implements PrimaryKeysInterfa
         //====================================================================//
         // Get List Detailed Information
         $response = $this->getConnexion()->get("/lists/".$config["ApiList"]);
-        if (is_null($response) || !is_array($response)) {
+        if (is_null($response)) {
             return $informations;
         }
 
         //====================================================================//
         // Company Information
+        /** @var array<string, null|string> $contact */
         $contact = $response["contact"] ?? array();
         $informations->company = $contact["company"] ?? null;
         $informations->address = $contact["address1"] ?? null;
@@ -194,7 +195,9 @@ class MailChimpConnector extends AbstractConnector implements PrimaryKeysInterfa
         $informations->town = $contact["city"] ?? null;
         $informations->country = $contact["country"] ?? null;
         $informations->www = "https://mailchimp.com";
-        $informations->email = $response["campaign_defaults"]["from_email"] ?? " ";
+        /** @var array<string, null|string> $campaignDefaults */
+        $campaignDefaults = $response["campaign_defaults"] ?? array();
+        $informations->email = $campaignDefaults["from_email"] ?? " ";
         $informations->phone = $contact["phone"] ?? null;
 
         return $informations;
