@@ -1,0 +1,42 @@
+################################################################################
+#
+# * This file is part of SplashSync Project.
+# *
+# * Copyright (C) Splash Sync <www.splashsync.com>
+# *
+# * This program is distributed in the hope that it will be useful,
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# *
+# * For the full copyright and license information, please view the LICENSE
+# * file that was distributed with this source code.
+# *
+# * @author Bernard Paquier <contact@splashsync.com>
+#
+################################################################################
+
+api_platform:
+    title:        "MailChimp API SandBox"
+    defaults:
+        formats:    ['json']
+        stateless:  false
+    swagger:
+        api_keys:
+          - { name: "api-key", key: "api-key", type: "header" }
+    collection:
+        pagination:
+            enabled: true
+            items_per_page_parameter_name: limit
+
+services:
+
+    ########################################################################
+    # MailChimp Normalizer
+    App\Serializer\ApiNormalizer:
+        decorates: 'api_platform.serializer.normalizer.item'
+        arguments:
+            $decorated: '@App\Serializer\ApiNormalizer.inner'
+
+framework:
+  router:
+    utf8: true
