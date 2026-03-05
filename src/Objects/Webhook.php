@@ -16,21 +16,23 @@
 namespace Splash\Connectors\MailChimp\Objects;
 
 use Splash\Connectors\MailChimp\Connectors\MailChimpConnector;
-use Splash\Connectors\MailChimp\Models\Api\Member as MemberModel;
+use Splash\Connectors\MailChimp\Dictionary\WebhookEventTypes;
+use Splash\Connectors\MailChimp\Models\Api\Webhook as WebhookModel;
 use Splash\Core\Client\Splash;
-use Splash\Core\Interfaces\Object\PrimaryKeysAwareInterface;
 use Splash\OpenApi\Models\Objects\AbstractRestAndMetadataObject;
 
 /**
- * MailChimp Implementation of ThirdParty
+ * MailChimp Implementation of WebHooks
  */
-class ThirdParty extends AbstractRestAndMetadataObject implements PrimaryKeysAwareInterface
+class Webhook extends AbstractRestAndMetadataObject
 {
-    use ThirdParty\CRUDTrait;
-    use ThirdParty\MergeTrait;
+    /**
+     * @inheritDoc
+     */
+    protected static bool $disabled = true;
 
     /**
-     * @var MemberModel
+     * @var WebhookModel
      */
     protected object $object;
 
@@ -45,9 +47,9 @@ class ThirdParty extends AbstractRestAndMetadataObject implements PrimaryKeysAwa
     public function __construct(MailChimpConnector $connector)
     {
         parent::__construct(
-            $visitor = $connector->getVisitor(MemberModel::class),
+            $visitor = $connector->getVisitor(WebhookModel::class),
             $visitor->getMetadataAdapter(),
-            MemberModel::class
+            WebhookModel::class
         );
         $this->connector = $connector;
         //====================================================================//
@@ -56,11 +58,32 @@ class ThirdParty extends AbstractRestAndMetadataObject implements PrimaryKeysAwa
     }
 
     /**
-     * Get MailChimp Subscriber Hash
+     * Override Default Mode
      */
-    public static function hash(string $email): string
+    public static function setDisabled(bool $disabled = true): void
     {
-        return md5(strtolower($email));
+        static::$disabled = $disabled;
     }
 
+    /**
+     * Create Splash WebHook from Url
+     */
+    public function createFromUrl(string $url): bool
+    {
+        return !empty($this->set(null, array(
+            "url" => $url,
+            "events" => array(
+                WebhookEventTypes::SUBSCRIBE => true,
+                WebhookEventTypes::UNSUBSCRIBE => true,
+                WebhookEventTypes::PROFILE => true,
+                WebhookEventTypes::CLEANED => true,
+                WebhookEventTypes::CAMPAIGN => true,
+            ),
+            "sources" => array(
+                "user" => true,
+                "admin" => true,
+                "api" => false,
+            ),
+        )));
+    }
 }

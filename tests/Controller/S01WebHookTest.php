@@ -16,6 +16,7 @@
 namespace Splash\Connectors\MailChimp\Test\Controller;
 
 use Splash\Connectors\MailChimp\Connectors\MailChimpConnector;
+use Splash\Connectors\MailChimp\Dictionary\WebhookEventTypes;
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
 use Splash\Core\Dictionary\SplOperations;
 use Splash\Tests\Tools\TestCase;
@@ -180,7 +181,7 @@ class S01WebHookTest extends TestCase
             //====================================================================//
             // Subscribe
             array(
-                "subscribe",
+                WebhookEventTypes::SUBSCRIBE,
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SplOperations::UPDATE,
@@ -190,7 +191,7 @@ class S01WebHookTest extends TestCase
             //====================================================================//
             // Update Profile
             array(
-                "profile",
+                WebhookEventTypes::PROFILE,
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SplOperations::UPDATE,
@@ -200,7 +201,7 @@ class S01WebHookTest extends TestCase
             //====================================================================//
             // Update Email
             array(
-                "upemail",
+                WebhookEventTypes::UPEMAIL,
                 array(
                     "old_email" => "old.".self::FAKE_EMAIL,
                     "new_email" => self::FAKE_EMAIL,
@@ -213,7 +214,7 @@ class S01WebHookTest extends TestCase
             //====================================================================//
             // Unsubscribe & No Delete
             array(
-                "unsubscribe",
+                WebhookEventTypes::UNSUBSCRIBE,
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SplOperations::UPDATE,
@@ -223,7 +224,7 @@ class S01WebHookTest extends TestCase
             //====================================================================//
             // Unsubscribe & Delete
             array(
-                "unsubscribe",
+                WebhookEventTypes::UNSUBSCRIBE,
                 array("email" => self::FAKE_EMAIL, "action" => "delete"),
                 self::MEMBER,
                 SplOperations::DELETE,
@@ -233,7 +234,7 @@ class S01WebHookTest extends TestCase
             //====================================================================//
             // Cleaned
             array(
-                "cleaned",
+                WebhookEventTypes::CLEANED,
                 array("email" => self::FAKE_EMAIL),
                 self::MEMBER,
                 SplOperations::DELETE,

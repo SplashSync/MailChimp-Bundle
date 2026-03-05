@@ -17,6 +17,7 @@ namespace Splash\Connectors\MailChimp\Actions;
 
 use Psr\Log\LoggerInterface;
 use Splash\Bundle\Models\AbstractConnector;
+use Splash\Connectors\MailChimp\Dictionary\WebhookEventTypes;
 use Splash\Connectors\MailChimp\Objects\ThirdParty;
 use Splash\Core\Dictionary\SplOperations;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,7 +79,7 @@ class Master extends AbstractController
         } elseif ($this->isUpdateEvent($type)) {
             $action = SplOperations::UPDATE;
             $objectId = ThirdParty::hash($data["email"]);
-        } elseif (in_array($type, array("upemail"), true)) {
+        } elseif (WebhookEventTypes::UPEMAIL === $type) {
             //====================================================================//
             // Update Object Id as Changed by this Request (Email Modified)
             $connector->objectIdChanged(
@@ -168,7 +169,11 @@ class Master extends AbstractController
      */
     private function isUpdateEvent(string $type) : bool
     {
-        return in_array($type, array("subscribe", "unsubscribe", "profile"), true);
+        return in_array($type, array(
+            WebhookEventTypes::SUBSCRIBE,
+            WebhookEventTypes::UNSUBSCRIBE,
+            WebhookEventTypes::PROFILE,
+        ), true);
     }
 
     /**
@@ -178,10 +183,10 @@ class Master extends AbstractController
      */
     private function isDeleteEvent(string $type, array $data) : bool
     {
-        if (("unsubscribe" == $type) && isset($data["action"]) && ('delete' == $data["action"])) {
+        if ((WebhookEventTypes::UNSUBSCRIBE === $type) && isset($data["action"]) && ('delete' === $data["action"])) {
             return true;
         }
 
-        return in_array($type, array("cleaned"), true);
+        return WebhookEventTypes::CLEANED === $type;
     }
 }

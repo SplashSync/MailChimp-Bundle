@@ -30,8 +30,6 @@ use Symfony\Component\Serializer\Attribute as Serializer;
     name: "Customer",
     description: "MailChimp Subscriber",
     ico: "fa fa-user",
-    allowPushDeleted: null,
-    enablePushDeleted: null
 )]
 #[RestResource(
     collectionUri: "/members",

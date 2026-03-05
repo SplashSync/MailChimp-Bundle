@@ -20,3 +20,5 @@
 /.php-cs-fixer.cache
 /.phpunit.result.cache
 /tests/public/bundles/
+/config/reference.php
+/assets/vendor/

@@ -11,11 +11,11 @@ splash:
     connections:
         
         ########################################################################
-        # MailChimp Default
-        mailchimp:
+        # MailChimp Default / Staging
+        staging:
             id:                 ThisIsMailChimpWsId
             key:                ThisIsNotASecretKeyForMailChimp
-            name:               Serveur 1 (MailChimp)
+            name:               MailChimp - Staging
             connector:          mailchimp
             config:
                 WsHost:         http://localhost:8000

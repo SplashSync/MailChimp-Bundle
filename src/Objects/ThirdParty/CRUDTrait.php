@@ -15,85 +15,56 @@
 
 namespace Splash\Connectors\MailChimp\Objects\ThirdParty;
 
-use Splash\Connectors\MailChimp\Models\MailChimpHelper as API;
-use Splash\Core\SplashCore as Splash;
-use stdClass;
+use Splash\Connectors\MailChimp\Models\Api\Member;
+use Splash\Connectors\MailChimp\Objects\ThirdParty;
+use Splash\Core\Client\Splash;
 
 /**
- * MailChimp Users CRUD Functions
+ * MailChimp Members CRUD Functions
  */
 trait CRUDTrait
 {
     /**
-     * Get MailChimp Subscriber Hash
-     *
-     * @param string $email
-     *
-     * @return string $result
+     * {@inheritDoc}
      */
-    public static function hash(string $email) : string
-    {
-        return md5(strtolower($email));
-    }
-
-    /**
-     * Load Request Object
-     *
-     * @param string $objectId Object ID
-     *
-     * @return null|stdClass
-     */
-    public function load(string$objectId): ?stdClass
+    public function getByPrimary(array $keys): ?string
     {
         //====================================================================//
-        // Stack Trace
-        Splash::log()->trace();
-        $this->objectIdChanged = false;
-        //====================================================================//
-        // Execute Read Request
-        $mcObject = API::get(self::getBaseUri().$objectId);
-        //====================================================================//
-        // Fetch Object
-        if (null == $mcObject) {
-            return Splash::log()->errNull("Unable to load Member (".$objectId.").");
+        // Safety Check
+        $email = $keys['email_address'] ?? null;
+        if (!$email) {
+            return null;
         }
         //====================================================================//
-        // Check Object Status
-        if ("archived" == $mcObject->status) {
-            return Splash::log()->errNull("Member is Archived, you can't read it! (".$objectId.").");
-        }
+        // Try to Load Contact by MD5 Hash of Email
+        $member = $this->load(ThirdParty::hash((string) $email));
+        //====================================================================//
+        // Clean Splash Log
+        Splash::log()->cleanLog();
 
-        return $mcObject;
+        return $member instanceof Member ? $member->getId() : null;
     }
 
     /**
      * Create Request Object
-     *
-     * @return null|stdClass New Object
      */
-    public function create(): ?stdClass
+    public function create(): ?Member
     {
         //====================================================================//
-        // Stack Trace
-        Splash::log()->trace();
-        //====================================================================//
-        // Check Customer Name is given
-        if (empty($this->in["email_address"])) {
+        // Check Email is given
+        if (empty($this->in["email_address"]) || !is_string($this->in["email_address"])) {
             Splash::log()->err("ErrLocalFieldMissing", __CLASS__, __FUNCTION__, "email_address");
 
             return null;
         }
         //====================================================================//
-        // Init Object
-        $this->object = new stdClass();
-        //====================================================================//
-        // Pre-Setup of Member
-        $this->setSimple("email_address", $this->in["email_address"]);
-        $this->setSimple("status_if_new", "subscribed");
-        $this->setSimple("status", "subscribed");
-        $this->needUpdate();
+        // Execute Core Create
+        $member = $this->coreCreate();
+        if (!$member instanceof Member) {
+            return null;
+        }
 
-        return $this->object;
+        return $member;
     }
 
     /**
@@ -101,87 +72,43 @@ trait CRUDTrait
      *
      * @param bool $needed Is This Update Needed
      *
-     * @return null|string Object ID of False if Failed to Update
+     * @return null|string Object ID or NULL if Failed
      */
     public function update(bool $needed): ?string
     {
         //====================================================================//
-        // Stack Trace
-        Splash::log()->trace();
+        // No Update Required
         if (!$needed) {
-            return $this->getObjectIdentifier();
+            return $this->object->getId();
         }
 
         //====================================================================//
-        // Generate id If Needed
-        if (!isset($this->object->id) || empty($this->object->id)) {
-            $this->object->id = self::hash($this->object->email_address);
+        // Email Changed => Delete old + Create new (ID is MD5 hash of email)
+        if ($this->object->hasEmailChanged()) {
+            $oldHash = ThirdParty::hash((string) $this->object->getOldEmail());
+            //====================================================================//
+            // Delete Old Member
+            $this->delete($oldHash);
+            //====================================================================//
+            // Create New Member
+            $createResponse = $this->visitor->create($this->object);
+            if (!$createResponse->isSuccess()) {
+                return Splash::log()->errNull(
+                    "Unable to Create Member (".$this->object->email_address.")."
+                );
+            }
+            //====================================================================//
+            // Dispatch Object ID Updated Event
+            $newHash = ThirdParty::hash($this->object->email_address);
+            $this->connector->objectIdChanged("ThirdParty", $oldHash, $newHash);
+
+            return $newHash;
         }
+
         //====================================================================//
-        // Update Object
-        $response = API::put(
-            self::getBaseUri()."/".$this->object->id,
-            $this->object
-        );
+        // Standard Update
+        $objectId = $this->coreUpdate(true);
 
-        if (is_null($response) || ($response->id != self::hash($this->object->email_address))) {
-            return Splash::log()->errNull(" Unable to Update Member (".$this->object->email_address.").");
-        }
-        //====================================================================//
-        // Update Object Id if Changed by this Request (Email Modified)
-        if ($this->objectIdChanged) {
-            $this->connector->objectIdChanged(
-                "ThirdParty",
-                $this->object->id,
-                self::hash($this->object->email_address)
-            );
-
-            return self::hash($this->object->email_address);
-        }
-
-        return $this->getObjectIdentifier();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete(string $objectId): bool
-    {
-        //====================================================================//
-        // Stack Trace
-        Splash::log()->trace();
-        //====================================================================//
-        // Delete Object
-        $response = API::delete(self::getBaseUri()."/".$objectId);
-        if (null === $response) {
-            return Splash::log()->errTrace(" Unable to Delete Member (".$objectId.").");
-        }
-
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getObjectIdentifier(): ?string
-    {
-        return $this->object->id ?? null;
-    }
-
-    /**
-     * Get Object CRUD Base Uri
-     *
-     * @param null|string $email
-     *
-     * @return string
-     */
-    private static function getBaseUri(string $email = null) : string
-    {
-        $baseUri = 'lists/'.API::getList().'/members/';
-        if (!is_null($email)) {
-            return $baseUri."/".self::hash($email);
-        }
-
-        return $baseUri;
+        return $objectId ?: null;
     }
 }
