@@ -38,5 +38,5 @@ services:
             $decorated: '@App\Serializer\ApiNormalizer.inner'
 
 framework:
-  router:
-    utf8: true
+    router:
+        utf8: true
