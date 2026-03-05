@@ -21,3 +21,16 @@ splash:
                 WsHost:         http://localhost:8000
                 ApiKey:         "%env(resolve:MC_API_KEY)%"
                 ApiList:        "%env(resolve:MC_API_LIST)%"
+
+        ########################################################################
+        # MailChimp Sandbox
+        sandbox:
+            id:                 ThisIsMailChimpSandboxWsId
+            key:                ThisIsNotASecretKeyForMailChimpSandbox
+            name:               MailChimp - Sandbox
+            connector:          mailchimp
+            config:
+                isSandbox:      true
+                WsHost:         http://sandbox.mailchimp.local
+                ApiKey:         "ThisIsSecretApiKey-sandbox"
+                ApiList:        "1"
