@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 
 /**
- * MailChimp API Rate Limiter (10 concurrent connections max)
+ * MailChimp API Rate Limiter (10 concurrent, throttle above 7 req/s)
  */
 class MailChimpRateLimiter implements RateLimiterInterface
 {

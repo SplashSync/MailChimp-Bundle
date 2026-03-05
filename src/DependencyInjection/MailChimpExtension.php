@@ -42,13 +42,14 @@ class MailChimpExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container): void
     {
         //==============================================================================
-        // Configure Framework Rate Limiter (MailChimp: 10 concurrent / ~100 req/min)
+        // Configure Framework Rate Limiter
+        // MailChimp: 10 concurrent connections, throttle above 7 req/s
         $container->prependExtensionConfig('framework', array(
             'rate_limiter' => array(
                 MailChimpRateLimiter::CONFIG_KEY => array(
                     'policy' => 'sliding_window',
-                    'limit' => 100,
-                    'interval' => '1 minute',
+                    'limit' => 7,
+                    'interval' => '1 second',
                 ),
             ),
         ));
