@@ -46,7 +46,7 @@
 
         <!-- <env  name="SPLASH_TYPES" value="ThirdParty" />-->
         <!-- <env  name="SPLASH_SEQUENCE" value="MailChimp - Staging" />-->
-        <!-- <env  name="SPLASH_SEQUENCE" value="MailChimp - Sandbox" />-->
+         <env  name="SPLASH_SEQUENCE" value="MailChimp - Sandbox" />
     </php>
     
 </phpunit>
