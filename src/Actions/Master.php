@@ -113,12 +113,11 @@ class Master extends AbstractController
             throw new BadRequestHttpException('Malformed or missing data');
         }
         //==============================================================================
-        // Decode Received Type
-        $requestType = empty($request->request->get('type'))
-            /** @phpstan-ignore-next-line  */
-            ? json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING)['type']
-            : $request->request->get('type')
-        ;
+        // Decode Received Type (POST form or JSON body)
+        $postData = $request->request->all();
+        /** @var null|array $jsonData */
+        $jsonData = json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING);
+        $requestType = $postData['type'] ?? $jsonData['type'] ?? null;
         //==============================================================================
         // Safety Check => Type are here
         if (empty($requestType) || !is_scalar($requestType)) {
@@ -145,12 +144,11 @@ class Master extends AbstractController
             throw new BadRequestHttpException('Malformed or missing data');
         }
         //==============================================================================
-        // Decode Received Data
-        $requestData = empty($request->request->get('data'))
-            /** @phpstan-ignore-next-line  */
-            ? json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING)['data']
-            : $request->request->get('data')
-        ;
+        // Decode Received Data (POST form or JSON body)
+        $postData = $request->request->all();
+        /** @var null|array $jsonData */
+        $jsonData = json_decode($request->getContent(), true, 512, \JSON_BIGINT_AS_STRING);
+        $requestData = $postData['data'] ?? $jsonData['data'] ?? null;
         //==============================================================================
         // Safety Check => Data are here
         if (empty($requestData) || !is_array($requestData)) {

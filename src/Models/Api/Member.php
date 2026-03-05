@@ -52,7 +52,7 @@ class Member
     /**
      * Member Status (subscribed, unsubscribed, cleaned, pending, transactional)
      */
-    #[Serializer\Groups(SplGroups::DEFAULT)]
+    #[Serializer\Groups(SplGroups::DEFAULT_REQUIRED)]
     #[Serializer\SerializedName("status")]
     public string $status = "subscribed";
 

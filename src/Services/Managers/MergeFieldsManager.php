@@ -104,6 +104,12 @@ class MergeFieldsManager
     private function getMergeFieldsDetails(): array
     {
         $raw = $this->getConnector()->getParameter(self::MERGE_FIELDS_DETAILS);
+        //====================================================================//
+        // Force Fetch if not yet loaded
+        if (empty($raw) || !is_array($raw)) {
+            $this->fetchMergeFields();
+            $raw = $this->getConnector()->getParameter(self::MERGE_FIELDS_DETAILS);
+        }
         if (empty($raw) || !is_array($raw)) {
             return array();
         }

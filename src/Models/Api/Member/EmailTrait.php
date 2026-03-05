@@ -57,7 +57,7 @@ trait EmailTrait
      */
     public function setEmailAddress(string $emailAddress): static
     {
-        if (isset($this->email_address) && $this->email_address !== $emailAddress) {
+        if (!empty($this->email_address) && $this->email_address !== $emailAddress) {
             $this->oldEmail = $this->email_address;
         }
         $this->email_address = $emailAddress;
