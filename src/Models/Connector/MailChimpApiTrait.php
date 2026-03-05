@@ -18,6 +18,7 @@ namespace Splash\Connectors\MailChimp\Models\Connector;
 use Httpful\Request;
 use Splash\Connectors\MailChimp\Dictionary\MailChimpEndpoints;
 use Splash\Connectors\MailChimp\Models\Api\Action as MailChimpAction;
+use Splash\Connectors\MailChimp\Services\Connexion\MailChimpErrorParser;
 use Splash\Connectors\MailChimp\Services\MailChimpLocator;
 use Splash\OpenApi\Connexion\JsonConnexion;
 use Splash\OpenApi\Hydrators\SymfonyHydrator;
@@ -147,6 +148,12 @@ trait MailChimpApiTrait
                 ;
             }
         );
+        //====================================================================//
+        // Setup Rate Limiter
+        $connexion->setRateLimiter($this->getLocator()->getRateLimiter());
+        //====================================================================//
+        // Setup Error Parser
+        $connexion->setErrorParser(new MailChimpErrorParser());
 
         return $this->connexions[$cacheKey] = $connexion;
     }

@@ -41,6 +41,7 @@ class MailChimpLocator implements ServiceSubscriberInterface
             Managers\ListsManager::class,
             Managers\MergeFieldsManager::class,
             Managers\WebHookManager::class,
+            Connexion\MailChimpRateLimiter::class,
         );
     }
 
@@ -85,5 +86,18 @@ class MailChimpLocator implements ServiceSubscriberInterface
         );
 
         return $service->configure($this->connector);
+    }
+
+    /**
+     * Get MailChimp Rate Limiter
+     */
+    public function getRateLimiter(): Connexion\MailChimpRateLimiter
+    {
+        Assert::isInstanceOf(
+            $service = $this->locator->get(Connexion\MailChimpRateLimiter::class),
+            Connexion\MailChimpRateLimiter::class
+        );
+
+        return $service;
     }
 }

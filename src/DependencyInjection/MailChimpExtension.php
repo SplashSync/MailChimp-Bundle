@@ -15,15 +15,17 @@
 
 namespace Splash\Connectors\MailChimp\DependencyInjection;
 
+use Splash\Connectors\MailChimp\Services\Connexion\MailChimpRateLimiter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Loads and manages bundle configuration
  */
-class MailChimpExtension extends Extension
+class MailChimpExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -32,5 +34,23 @@ class MailChimpExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container): void
+    {
+        //==============================================================================
+        // Configure Framework Rate Limiter (MailChimp: 10 concurrent / ~100 req/min)
+        $container->prependExtensionConfig('framework', array(
+            'rate_limiter' => array(
+                MailChimpRateLimiter::CONFIG_KEY => array(
+                    'policy' => 'sliding_window',
+                    'limit' => 100,
+                    'interval' => '1 minute',
+                ),
+            ),
+        ));
     }
 }
