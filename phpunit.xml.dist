@@ -25,10 +25,17 @@
 
     <php>
         <server name="KERNEL_CLASS" value="Splash\Toolkit\Kernel" />
+        <env    name="APP_SECRET" value="ThisIsNotSecretForMailChimp" />
         <env    name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
         <server name="SERVER_NAME" value="http://localhost:8000"/>        
         <const  name="SPLASH_DEBUG" value="true" />
         <server name="SPLASH_TRAVIS" value="true" />
+
+        <server name="SPLASH_CI" value="true" />
+
+        <!-- <env  name="SPLASH_TYPES" value="ThirdParty" />-->
+        <!-- <env  name="SPLASH_SEQUENCE" value="Mailjet - Staging" />-->
+        <!-- <env  name="SPLASH_SEQUENCE" value="Mailjet - Sandbox" />-->
     </php>
     
 </phpunit>
