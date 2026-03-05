@@ -17,6 +17,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata as API;
 use ApiPlatform\Metadata\Link;
+use App\Controller\WebHook\CreateWebHookController;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Ignore;
@@ -30,23 +31,26 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 #[ORM\Entity]
 #[API\ApiResource(
     uriTemplate: '/3.0/lists/{listId}/webhooks',
-    uriVariables: array(
-        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
-    ),
     operations: array(
         new API\GetCollection(),
-        new API\Post(),
+        new API\Post(
+            controller: CreateWebHookController::class,
+            read: false,
+        ),
+    ),
+    uriVariables: array(
+        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
     )
 )]
 #[API\ApiResource(
     uriTemplate: '/3.0/lists/{listId}/webhooks/{id}',
-    uriVariables: array(
-        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
-        'id' => new Link(fromClass: self::class),
-    ),
     operations: array(
         new API\Get(),
         new API\Delete(status: 204, output: false),
+    ),
+    uriVariables: array(
+        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
+        'id' => new Link(fromClass: self::class),
     )
 )]
 class WebHook

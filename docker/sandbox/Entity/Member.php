@@ -17,6 +17,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata as API;
 use ApiPlatform\Metadata\Link;
+use App\Controller\Member\CreateMemberController;
 use App\Controller\Member\GetByHashController;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,29 +28,29 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
  * MailChimp Member (Subscriber) Entity.
  *
  * Fakes /3.0/lists/{list_id}/members endpoints.
+ * listId in URL is accepted but not used for filtering (sandbox simplification).
  */
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[API\ApiResource(
     uriTemplate: '/3.0/lists/{listId}/members',
-    uriVariables: array(
-        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
-    ),
     operations: array(
         new API\GetCollection(),
-        new API\Post(),
+        new API\Post(
+            controller: CreateMemberController::class,
+            read: false,
+        ),
+    ),
+    uriVariables: array(
+        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
     )
 )]
 #[API\ApiResource(
     uriTemplate: '/3.0/lists/{listId}/members/{subscriberHash}',
-    uriVariables: array(
-        'listId' => new Link(fromClass: MailingList::class, toProperty: 'list'),
-        'subscriberHash' => new Link(fromClass: self::class, identifiers: array('id')),
-    ),
     operations: array(
         new API\Get(controller: GetByHashController::class, read: false),
-        new API\Put(extraProperties: array('standard_put' => false)),
-        new API\Delete(status: 204, output: false),
+        new API\Put(controller: GetByHashController::class, read: false, extraProperties: array('standard_put' => false)),
+        new API\Delete(controller: GetByHashController::class, read: false, status: 204, output: false),
     )
 )]
 class Member
