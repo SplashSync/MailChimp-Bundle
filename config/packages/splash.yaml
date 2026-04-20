@@ -27,10 +27,23 @@ splash:
         sandbox:
             id:                 ThisIsMailChimpSandboxWsId
             key:                ThisIsNotASecretKeyForMailChimpSandbox
-            name:               MailChimp - Sandbox
+            name:               "MailChimp - Sandbox"
             connector:          mailchimp
             config:
                 isSandbox:      true
                 WsHost:         http://sandbox.mailchimp.local
                 ApiKey:         "ThisIsSecretApiKey-sandbox"
                 ApiList:        "1"
+
+        ########################################################################
+        # MailChimp Bridge Sandbox (Standalone Connector for testing)
+        bridge:
+            id:                 ThisIsMailChimpBridgeWsId
+            key:                ThisIsNotASecretKeyForMailChimpBridge
+            name:               "MailChimp - Bridge"
+            connector:          "3.0@mailchimp"
+            config:
+                isSandbox:      true
+                WsHost:         'http://172.110.0.101'
+                ApiKey:         'ThisIsSecretApiKey-sandbox'
+                ApiList:        '1'

@@ -40,6 +40,8 @@ services:
         volumes:
             # Specify Local Configuration File
             - './config/packages/splash.yaml:/app/config/packages/splash.yaml:ro'
+            # Push Bridge Connector
+            - './dist/:/app/bridges/:ro'
             # Uncomment to use Local Sources instead of Release
             - './src/:/app/connectors/MailChimp/:ro'
         hostname:           toolkit.mailchimp.local
