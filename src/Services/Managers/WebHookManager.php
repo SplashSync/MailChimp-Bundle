@@ -84,7 +84,9 @@ class WebHookManager
         // Filter & Clean List Of WebHooks
         $foundWebHook = false;
         foreach ($webHooks as $webHook) {
-            if (!is_array($webHook) || empty($webHook['url']) || !is_scalar($webHook['url'])) {
+            if (!is_array($webHook) || empty($webHook['url'])
+                || !is_scalar($webHook['url']) || !is_scalar($webHook['id'])
+            ) {
                 continue;
             }
             //====================================================================//
